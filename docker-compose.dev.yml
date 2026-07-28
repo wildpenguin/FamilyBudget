@@ -1,0 +1,46 @@
+services:
+  backend:
+    build:
+      context: .                          # monorepo root — needed to see all workspaces
+      dockerfile: apps/backend/Dockerfile.dev
+    container_name: backend-dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+      JWT_SECRET: ${JWT_SECRET}
+    working_dir: /app/apps/backend
+    volumes:
+      - ./:/app                            # mount the whole monorepo
+      - /app/node_modules                   # protect root node_modules
+      - /app/apps/backend/node_modules       # protect backend's node_modules (if it has any local ones)
+      - /app/packages/shared/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:17-alpine
+    container_name: db-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_SUPERUSER}
+      POSTGRES_PASSWORD: ${DB_SUPERUSER_PASSWORD}
+      APP_USER: ${DB_USER}
+      APP_USER_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pgdata-dev:/var/lib/postgresql/data
+      - ./apps/backend/db-init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata-dev:

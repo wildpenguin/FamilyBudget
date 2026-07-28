@@ -1,0 +1,17 @@
+# apps/backend/Dockerfile.dev
+FROM node:24-alpine
+WORKDIR /app
+
+# Copy root manifest + lockfile first (caching)
+COPY package.json package-lock.json ./
+
+# Copy every workspace's package.json — needed for npm workspaces to resolve
+COPY apps/backend/package.json ./apps/backend/package.json
+COPY packages/shared/package.json ./packages/shared/package.json
+
+RUN npm ci
+
+# Don't COPY source — it comes from the bind mount instead
+WORKDIR /app/apps/backend
+EXPOSE 3000
+CMD ["npm", "run", "dev"]

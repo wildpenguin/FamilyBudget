@@ -1,0 +1,15 @@
+{
+  "name": "ourbudget",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "mobile": "npm run start --workspace=@ourbudget/mobile",
+    "backend": "npm run dev --workspace=@ourbudget/backend",
+    "docker:dev": "docker compose --env-file .env.development -f docker-compose.dev.yml up -d --build",
+    "docker:prod": "docker compose --env-file .env.production -f docker-compose.yml up -d --build"
+  }
+}
