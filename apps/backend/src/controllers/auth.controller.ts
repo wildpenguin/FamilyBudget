@@ -7,7 +7,7 @@ const authSchema = z.object({
     password: z.string().min(8),
 });
 
-export function authenticateUser(req: Request, res: Response) {
+export async function authenticateUser(req: Request, res: Response) {
     const result = authSchema.safeParse(req.body);
 
     if (!result.success) {
