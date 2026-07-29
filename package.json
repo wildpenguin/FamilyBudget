@@ -21,5 +21,11 @@
   },
   "dependencies": {
     "jsonwebtoken": "^9.0.3"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true,
+    "esbuild@0.28.1": true,
+    "bcrypt@6.0.0": true,
+    "fsevents@2.3.3": true
   }
 }
