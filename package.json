@@ -9,7 +9,17 @@
   "scripts": {
     "mobile": "npm run start --workspace=@ourbudget/mobile",
     "backend": "npm run dev --workspace=@ourbudget/backend",
-    "docker:dev": "docker compose --env-file .env.development -f docker-compose.dev.yml up -d --build",
-    "docker:prod": "docker compose --env-file .env.production -f docker-compose.yml up -d --build"
+    "docker:dev": "docker compose --env-file apps/backend/.env.development -f docker-compose.dev.yml up -d --build",
+    "docker:dev:stop": "docker compose -f docker-compose.dev.yml stop",
+    "docker:prod": "docker compose --env-file apps/backend/.env.production -f docker-compose.yml up -d --build",
+    "db:generate": "docker compose --env-file apps/backend/.env.development exec backend npx drizzle-kit generate",
+    "db:migrate": "docker compose --env-file apps/backend/.env.development exec backend npx drizzle-kit migrate"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "drizzle-orm": "^1.0.0-rc.4"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.3"
   }
 }
