@@ -14,9 +14,17 @@ export async function authenticateUser(req: Request, res: Response) {
         return res.status(400).json({ error: z.treeifyError(result.error) });
     }
     const { email, password } = result.data;
-    const token = await authService.login(email, password);
-    if (!token) {
+    const loginResult = await authService.login(email, password);
+    if (!loginResult) {
         return res.status(401).json({ error: 'Invalid credentials' });
     }
-    return res.json({ token });
+    const { token, user } = loginResult;
+    
+    return res.json({ 
+        "token": token,
+        "user": {
+            "id": user.id,
+            "name": user.name
+        }
+    });
 }

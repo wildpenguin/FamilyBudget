@@ -26,6 +26,7 @@ services:
       POSTGRES_PASSWORD: ${DB_SUPERUSER_PASSWORD}
       APP_USER: ${DB_USER}
       APP_USER_PASSWORD: ${DB_PASSWORD}
+      TEST_DB: ${TEST_DB}
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./apps/backend/db-init:/docker-entrypoint-initdb.d

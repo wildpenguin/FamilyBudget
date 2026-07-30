@@ -10,6 +10,6 @@ export const authService = {
         }
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-        return token;
+        return {token, user};
     }
 };

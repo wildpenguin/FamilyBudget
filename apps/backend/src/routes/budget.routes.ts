@@ -4,4 +4,4 @@ import { listBudgets } from '../controllers/budget.controller';
 
 export const budgetRouter = Router();
 
-budgetRouter.get('/', listBudgets);
+budgetRouter.get('/budget', listBudgets);
