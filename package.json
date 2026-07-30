@@ -18,6 +18,7 @@
     "db:migrate:test": "docker compose --env-file apps/backend/.env.development exec -e NODE_ENV=test backend npx drizzle-kit migrate"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.6",
     "@types/jsonwebtoken": "^9.0.10",
     "drizzle-orm": "^1.0.0-rc.4"
   },
