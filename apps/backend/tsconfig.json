@@ -1,13 +1,13 @@
 {
-  "compilerOptions": {
-    "strict": true,
-    "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "outDir": "dist",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true
-  },
-  "include": ["src", "drizzle.config.ts"]
+	"compilerOptions": {
+		"strict": true,
+		"target": "ES2022",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"outDir": "dist",
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"resolveJsonModule": true
+	},
+	"include": ["src", "drizzle.config.ts"]
 }

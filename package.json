@@ -1,34 +1,35 @@
 {
-  "name": "ourbudget",
-  "version": "1.0.0",
-  "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "scripts": {
-    "mobile": "npm run start --workspace=@ourbudget/mobile",
-    "backend": "npm run dev --workspace=@ourbudget/backend",
-    "docker:dev:up": "docker compose --env-file apps/backend/.env.development -f docker-compose.dev.yml up -d --build",
-    "docker:dev:stop": "docker compose -f docker-compose.dev.yml stop",
-    "docker:dev:downv": "docker compose -f docker-compose.dev.yml down -v",
-    "docker:prod": "docker compose --env-file apps/backend/.env.production -f docker-compose.yml up -d --build",
-    "db:generate": "docker compose --env-file apps/backend/.env.development exec backend npx drizzle-kit generate",
-    "db:migrate": "docker compose --env-file apps/backend/.env.development exec backend npx drizzle-kit migrate",
-    "db:migrate:test": "docker compose --env-file apps/backend/.env.development exec -e NODE_ENV=test backend npx drizzle-kit migrate"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^2.5.6",
-    "@types/jsonwebtoken": "^9.0.10",
-    "drizzle-orm": "^1.0.0-rc.4"
-  },
-  "dependencies": {
-    "jsonwebtoken": "^9.0.3"
-  },
-  "allowScripts": {
-    "esbuild@0.25.12": true,
-    "esbuild@0.28.1": true,
-    "bcrypt@6.0.0": true,
-    "fsevents@2.3.3": true
-  }
+	"name": "ourbudget",
+	"version": "1.0.0",
+	"private": true,
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
+	"scripts": {
+		"mobile": "npm run start --workspace=@ourbudget/mobile",
+		"backend": "npm run dev --workspace=@ourbudget/backend",
+		"docker:dev:up": "docker compose --env-file apps/backend/.env.development -f docker-compose.dev.yml up -d --build",
+		"docker:dev:stop": "docker compose -f docker-compose.dev.yml stop",
+		"docker:dev:downv": "docker compose -f docker-compose.dev.yml down -v",
+		"docker:prod": "docker compose --env-file apps/backend/.env.production -f docker-compose.yml up -d --build",
+		"db:generate": "docker compose --env-file apps/backend/.env.development exec backend npx drizzle-kit generate",
+		"db:migrate": "docker compose --env-file apps/backend/.env.development exec backend npx drizzle-kit migrate",
+		"db:migrate:test": "docker compose --env-file apps/backend/.env.development exec -e NODE_ENV=test backend npx drizzle-kit migrate",
+    "test:file": "docker compose --env-file apps/backend/.env.development exec -e NODE_ENV=test backend npx vitest run"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.5.6",
+		"@types/jsonwebtoken": "^9.0.10",
+		"drizzle-orm": "^1.0.0-rc.4"
+	},
+	"dependencies": {
+		"jsonwebtoken": "^9.0.3"
+	},
+	"allowScripts": {
+		"esbuild@0.25.12": true,
+		"esbuild@0.28.1": true,
+		"bcrypt@6.0.0": true,
+		"fsevents@2.3.3": true
+	}
 }

@@ -1,7 +1,7 @@
-import { Router } from 'express';
+import { Router } from "express";
 
-import { listBudgets } from '../controllers/budget.controller';
+import { listBudgets } from "../controllers/budget.controller";
 
 export const budgetRouter = Router();
 
-budgetRouter.get('/budget', listBudgets);
+budgetRouter.get("/budget", listBudgets);

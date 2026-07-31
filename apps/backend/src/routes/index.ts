@@ -1,9 +1,9 @@
-import { Router } from 'express';
+import { Router } from "express";
 
-import { loginRouter } from './auth.routes';
-import { budgetRouter } from './budget.routes';
+import { authRouter } from "./auth.routes";
+import { budgetRouter } from "./budget.routes";
 
 export const router = Router();
 
-router.use('/login', loginRouter);
-router.use('/budgets', budgetRouter);
+router.use("/auth", authRouter);
+router.use("/api", budgetRouter);

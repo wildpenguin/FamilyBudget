@@ -1,9 +1,9 @@
-import { Tabs } from 'expo-router/js-tabs';
+import { Tabs } from "expo-router/js-tabs";
 
 export default function TabsLayout() {
-  return (
-    <Tabs>
-      <Tabs.Screen name="index" options={{ title: 'Budgets' }} />
-    </Tabs>
-  );
+	return (
+		<Tabs>
+			<Tabs.Screen name="index" options={{ title: "Budgets" }} />
+		</Tabs>
+	);
 }

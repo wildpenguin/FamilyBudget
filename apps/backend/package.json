@@ -1,36 +1,36 @@
 {
-  "name": "@ourbudget/backend",
-  "version": "1.0.0",
-  "private": true,
-  "main": "src/index.ts",
-  "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "node scripts/build.mjs",
-    "start": "node dist/index.js",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@ourbudget/shared": "*",
-    "bcrypt": "^6.0.0",
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "drizzle-orm": "^1.0.0-rc.4",
-    "express": "^5.2.1",
-    "pg": "^8.22.0",
-    "zod": "^4.4.3"
-  },
-  "devDependencies": {
-    "@types/bcrypt": "^6.0.0",
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.6",
-    "@types/node": "^22.10.2",
-    "@types/pg": "^8.20.0",
-    "@types/supertest": "^7.2.1",
-    "drizzle-kit": "^1.0.0-rc.4",
-    "esbuild": "^0.25.12",
-    "supertest": "^7.2.2",
-    "tsx": "^4.23.1",
-    "typescript": "~6.0.3",
-    "vitest": "^4.1.10"
-  }
+	"name": "@ourbudget/backend",
+	"version": "1.0.0",
+	"private": true,
+	"main": "src/index.ts",
+	"scripts": {
+		"dev": "tsx watch src/index.ts",
+		"build": "node scripts/build.mjs",
+		"start": "node dist/index.js",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@ourbudget/shared": "*",
+		"bcrypt": "^6.0.0",
+		"cors": "^2.8.6",
+		"dotenv": "^17.4.2",
+		"drizzle-orm": "^1.0.0-rc.4",
+		"express": "^5.2.1",
+		"pg": "^8.22.0",
+		"zod": "^4.4.3"
+	},
+	"devDependencies": {
+		"@types/bcrypt": "^6.0.0",
+		"@types/cors": "^2.8.19",
+		"@types/express": "^5.0.6",
+		"@types/node": "^22.10.2",
+		"@types/pg": "^8.20.0",
+		"@types/supertest": "^7.2.1",
+		"drizzle-kit": "^1.0.0-rc.4",
+		"esbuild": "^0.25.12",
+		"supertest": "^7.2.2",
+		"tsx": "^4.23.1",
+		"typescript": "~6.0.3",
+		"vitest": "^4.1.10"
+	}
 }
