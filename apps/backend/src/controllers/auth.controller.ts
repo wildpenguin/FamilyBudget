@@ -8,11 +8,10 @@ const authSchema = z.object({
 });
 
 const registerSchema = z.object({
-    name: z.string().max(30),
+	name: z.string().max(30),
 	email: z.email(),
 	password: z.string().min(8),
 });
-
 
 export const AuthController = {
 	async login(req: Request, res: Response) {
@@ -38,12 +37,12 @@ export const AuthController = {
 	},
 	async register(req: Request, res: Response) {
 		const result = registerSchema.safeParse(req.body);
-        if (!result.success) {
+		if (!result.success) {
 			return res.status(400).json(z.treeifyError(result.error));
 		}
-        const { name, email, password } = result.data;
+		const { name, email, password } = result.data;
 		const user = await authService.register(name, email, password);
-        
-        return res.json({user: user});
+
+		return res.json({ user: user });
 	},
 };

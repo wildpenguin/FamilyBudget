@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { userRepository } from "../repositories/userRepository";
 import { BCRYPT_SALT_ROUNDS } from "../config/constants";
+import { userRepository } from "../repositories/userRepository";
 
 export const authService = {
 	async login(email: string, password: string) {
@@ -15,10 +15,10 @@ export const authService = {
 
 		return { token, user };
 	},
-    async register(name: string, email: string, password: string) {
-        const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
-        const output = await userRepository.create(name, email, hashedPassword);
+	async register(name: string, email: string, password: string) {
+		const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
+		const output = await userRepository.create(name, email, hashedPassword);
 
-        return output;
-    },
+		return output;
+	},
 };

@@ -16,7 +16,7 @@
 		"db:generate": "docker compose --env-file apps/backend/.env.development exec backend npx drizzle-kit generate",
 		"db:migrate": "docker compose --env-file apps/backend/.env.development exec backend npx drizzle-kit migrate",
 		"db:migrate:test": "docker compose --env-file apps/backend/.env.development exec -e NODE_ENV=test backend npx drizzle-kit migrate",
-    "test:file": "docker compose --env-file apps/backend/.env.development exec -e NODE_ENV=test backend npx vitest run"
+		"test:file": "docker compose --env-file apps/backend/.env.development exec -e NODE_ENV=test backend npx vitest run"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.6",
