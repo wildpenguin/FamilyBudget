@@ -1,9 +1,9 @@
 import { Router } from "express";
 
 import { authRouter } from "./auth.routes";
-import { budgetRouter } from "./budget.routes";
+import { categoriesRouter } from "./categories.routes";
 
 export const router = Router();
 
 router.use("/auth", authRouter);
-router.use("/api", budgetRouter);
+router.use("/api", categoriesRouter);
