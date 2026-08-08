@@ -9,3 +9,4 @@ categoriesRouter.use(authenticate);
 categoriesRouter.get("/categories/:familyId", CategoriesController.list);
 categoriesRouter.put("/categories/:categoryId", CategoriesController.update);
 categoriesRouter.post("/categories", CategoriesController.create);
+categoriesRouter.delete("/categories/:categoryId", CategoriesController.delete);

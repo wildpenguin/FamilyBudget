@@ -6,4 +6,7 @@ import { db } from "../db";
 
 beforeEach(async () => {
 	await db.execute(sql`TRUNCATE TABLE users RESTART IDENTITY CASCADE`);
+	await db.execute(sql`TRUNCATE TABLE family_members RESTART IDENTITY CASCADE`);
+	await db.execute(sql`TRUNCATE TABLE families RESTART IDENTITY CASCADE`);
+	await db.execute(sql`TRUNCATE TABLE categories RESTART IDENTITY CASCADE`);
 });
