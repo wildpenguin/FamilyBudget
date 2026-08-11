@@ -1,7 +1,7 @@
 import { familyInvitesSchema } from "@ourbudget/shared";
 import type { Request, Response } from "express";
-import { familyInviteService } from "../services/familyInviteService";
 import * as z from "zod";
+import { familyInviteService } from "../services/familyInviteService";
 
 const acceptToken = z.object({
 	token: z.string().max(64),
@@ -13,10 +13,13 @@ export const FamilyInvitesController = {
 		if (!body.success) {
 			return res.status(400).json(z.treeifyError(body.error));
 		}
+		if (!req.userId) {
+			return res.status(400).json({ error: "User is missing" });
+		}
 		const invite = await familyInviteService.createInvite({
 			familyId: body.data.familyId,
 			invitedEmail: body.data.invitedEmail,
-			invitedByUserId: req.userId?
+			invitedByUserId: req.userId,
 		});
 		return res.json({
 			data: invite,
@@ -36,9 +39,9 @@ export const FamilyInvitesController = {
 		}
 		try {
 			await familyInviteService.acceptInvite(params.data.token, req.userId);
-            return res.json({data: 'success'});
+			return res.json({ data: "success" });
 		} catch (err) {
-			res.status(400).json({ error: err });
+			res.status(400).json(err instanceof Error ? err.message : String(err));
 		}
 	},
 };

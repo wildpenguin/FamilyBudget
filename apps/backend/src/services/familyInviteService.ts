@@ -1,25 +1,28 @@
-import type { FamilyInviteInput } from "@ourbudget/shared";
 import { isPast } from "date-fns";
 import { familyInvitesRepository } from "../repositories/familyInvitesRepository";
 import { userRepository } from "../repositories/userRepository";
+import { familyMembersRepository } from "../repositories/familyMembersRepository";
 
+
+// TODO: Send email to the invite
+// Not sure what email
+// services I can find to relay some emails
 export const familyInviteService = {
-	async createInvite(familyInvite: FamilyInviteInput) {
-		const invitedUser = await userRepository.findByEmail(familyInvite.invitedEmail);
+	async createInvite(invitedEmail: string, userId: number) {
+		const invitedUser = await userRepository.findByEmail(invitedEmail);
 		if (!invitedUser) {
 			throw new Error("Invited User must have an account");
 		}
-
-		// Todo: Send email to the invite
-		// but will do it later. Not sure what email
-		// services I can find to relay some emails
-
-		const result = await familyInvitesRepository.create({
-			familyId: familyInvite.familyId,
-			invitedByUserId: familyInvite.invitedByUserId,
-			invitedEmail: familyInvite.invitedEmail,
-			status: "pending",
-		});
+        const familyMember = await familyMembersRepository.findByUser(userId)
+        if (!familyMember) {
+            throw new Error('Cant find the family for this account');
+        }
+		const result = await familyInvitesRepository.create(
+			invitedEmail,
+			familyMember.familyId,
+			userId,
+			"pending",
+		);
 
 		return result;
 	},
