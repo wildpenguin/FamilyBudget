@@ -1,4 +1,4 @@
-import type { CreateFamilyInviteType } from "@ourbudget/shared";
+import type { FamilyInviteInput } from "@ourbudget/shared";
 import { eq } from "drizzle-orm";
 import { db } from "../db";
 import { familyMembers } from "../db/schema/familyMembers";
@@ -15,5 +15,4 @@ export const familyMembersRepository = {
 
 		return result[0] ?? null;
 	},
-	async create(familyInvite: CreateFamilyInviteType, userId?: number) {},
 };

@@ -1,14 +1,11 @@
 import type { FamilyInviteInput } from "@ourbudget/shared";
-import { randomBytes } from "crypto";
 import { isPast } from "date-fns";
 import { familyInvitesRepository } from "../repositories/familyInvitesRepository";
 import { userRepository } from "../repositories/userRepository";
 
 export const familyInviteService = {
 	async createInvite(familyInvite: FamilyInviteInput) {
-		const token = randomBytes(32).toString("hex");
-
-		const invitedUser = userRepository.findByEmail(familyInvite.invitedEmail);
+		const invitedUser = await userRepository.findByEmail(familyInvite.invitedEmail);
 		if (!invitedUser) {
 			throw new Error("Invited User must have an account");
 		}
@@ -21,7 +18,6 @@ export const familyInviteService = {
 			familyId: familyInvite.familyId,
 			invitedByUserId: familyInvite.invitedByUserId,
 			invitedEmail: familyInvite.invitedEmail,
-			token: token,
 			status: "pending",
 		});
 
@@ -32,6 +28,13 @@ export const familyInviteService = {
 		if (invite?.status !== "pending" || isPast(invite.expiresAt)) {
 			throw new Error("Invalid or expired token");
 		}
-		await familyInvitesRepository.accept(invite);
+		const user = await userRepository.findByEmail(invite.invitedEmail);
+		if (!user) {
+			throw new Error("Invited email must have an account!");
+		}
+		if (acceptingUserId !== user.id) {
+			throw new Error("Requested invite does not match original user");
+		}
+		await familyInvitesRepository.accept(invite, acceptingUserId);
 	},
 };

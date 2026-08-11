@@ -1,19 +1,23 @@
-import type { FamilyInvite } from "@ourbudget/shared";
+import type { FamilyInvite, FamilyInviteInput } from "@ourbudget/shared";
+import { randomBytes } from "crypto";
 import { addDays } from "date-fns";
 import { eq } from "drizzle-orm";
 import { db } from "../db";
 import { familyInvites } from "../db/schema/familyInvites";
+import { familyMembers } from "../db/schema/familyMembers";
 
 export const familyInvitesRepository = {
-	async create(familyInvite: FamilyInviteType) {
+	async create(familyInvite: FamilyInviteInput) {
+		const token = randomBytes(32).toString("hex");
+
 		const [invite] = await db
 			.insert(familyInvites)
 			.values({
 				familyId: familyInvite.familyId,
 				invitedEmail: familyInvite.invitedEmail,
 				invitedByUserId: familyInvite.invitedByUserId,
-				token: familyInvite.token,
 				status: familyInvite.status,
+				token: token,
 				expiresAt: addDays(new Date(), 3),
 			})
 			.returning();
@@ -28,9 +32,20 @@ export const familyInvitesRepository = {
 
 		return invite;
 	},
-	async accept(invite: FamilyInvite) {
-		db.transaction(async (tx) => {
-			//await tx.update()...
-		});
+	async accept(invite: FamilyInvite, userId: number) {
+		try {
+			return await db.transaction(async (tx) => {
+				await tx.insert(familyMembers).values({
+					familyId: invite.familyId,
+					userId,
+				});
+				await tx
+					.update(familyInvites)
+					.set({ status: "completed" })
+					.where(eq(familyInvites.token, invite.token));
+			});
+		} catch (err) {
+			throw new Error("Accept invite failed");
+		}
 	},
 };
