@@ -23,7 +23,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
 
 	try {
 		const payload = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
-		req.userId = payload.userId;
+		req.userId = Number(payload.userId);
 		next();
 	} catch (_err) {
 		return res.status(401).json({ error: "Invalid or expired token" });

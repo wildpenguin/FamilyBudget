@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import type { Request } from "express";
 import jwt from "jsonwebtoken";
 import { BCRYPT_SALT_ROUNDS } from "../config/constants";
 import { userRepository } from "../repositories/userRepository";
@@ -22,3 +23,8 @@ export const authService = {
 		return output;
 	},
 };
+
+export interface AuthenticatedRequest extends Request {
+    userId: number;
+}
+

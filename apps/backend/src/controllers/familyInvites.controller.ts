@@ -1,5 +1,5 @@
-import { familyInvitesSchema } from "@ourbudget/shared";
-import type { Request, Response } from "express";
+import { AuthenticatedRequest } from "../services/authService";
+import type { Response } from "express";
 import * as z from "zod";
 import { familyInviteService } from "../services/familyInviteService";
 
@@ -7,20 +7,22 @@ const acceptToken = z.object({
 	token: z.string().max(64),
 });
 
+const familyInvitesInput = z.object({
+    invitedEmail: z.email(),
+})
+
 export const FamilyInvitesController = {
-	async create(req: Request, res: Response) {
-		const body = familyInvitesSchema.safeParse(req.body);
+	async create(req: AuthenticatedRequest, res: Response) {
+
+		const body = familyInvitesInput.safeParse(req.body);
 		if (!body.success) {
 			return res.status(400).json(z.treeifyError(body.error));
 		}
-		if (!req.userId) {
-			return res.status(400).json({ error: "User is missing" });
-		}
-		const invite = await familyInviteService.createInvite({
-			familyId: body.data.familyId,
-			invitedEmail: body.data.invitedEmail,
-			invitedByUserId: req.userId,
-		});
+
+		const invite = await familyInviteService.createInvite(
+            body.data.invitedEmail,
+			req.userId,
+		);
 		return res.json({
 			data: invite,
 			meta: {
@@ -29,10 +31,8 @@ export const FamilyInvitesController = {
 		});
 	},
 
-	async accept(req: Request, res: Response) {
-		if (!req.userId) {
-			return res.status(400).json({ error: "Missing User" });
-		}
+	async accept(req: AuthenticatedRequest, res: Response) {
+
 		const params = acceptToken.safeParse(req.params);
 		if (!params.success) {
 			return res.status(400).json({ data: "Missing token information" });

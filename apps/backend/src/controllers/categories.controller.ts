@@ -1,7 +1,8 @@
 import { createCategorySchema, getCategorySchema } from "@ourbudget/shared";
-import type { Request, Response } from "express";
+import type { Response } from "express";
 import * as z from "zod";
 import { categoryRepository } from "../repositories/categoryRepository";
+import type { AuthenticatedRequest } from "../services/authService";
 
 const listCategoriesSchema = getCategorySchema
 	.pick({ type: true, sort: true })
@@ -16,7 +17,7 @@ const getCategoryNameSchema = z.object({
 });
 
 export const CategoriesController = {
-	async list(req: Request, res: Response) {
+	async list(req: AuthenticatedRequest, res: Response) {
 		const parsedQuery = listCategoriesSchema.safeParse(req.query);
 		if (!parsedQuery.success) {
 			return res.status(400).json(z.treeifyError(parsedQuery.error));
@@ -35,7 +36,7 @@ export const CategoriesController = {
 			},
 		});
 	},
-	async update(req: Request, res: Response) {
+	async update(req: AuthenticatedRequest, res: Response) {
 		const parsedParams = getCategoryIdSchema.safeParse(req.params);
 		if (!parsedParams.success) {
 			return res.status(404).json({ error: "CategoryId not found" });
@@ -56,7 +57,7 @@ export const CategoriesController = {
 			data: result,
 		});
 	},
-	async create(req: Request, res: Response) {
+	async create(req: AuthenticatedRequest, res: Response) {
 		const parsedBody = createCategorySchema.safeParse(req.body);
 		if (!parsedBody.success) {
 			return res.status(400).json(z.treeifyError(parsedBody.error));
@@ -65,7 +66,7 @@ export const CategoriesController = {
 
 		return res.json({ data: result });
 	},
-	async delete(req: Request, res: Response) {
+	async delete(req: AuthenticatedRequest, res: Response) {
 		const params = getCategoryIdSchema.safeParse(req.params);
 		if (!params.success) {
 			return res.status(400).json({ error: "Missing categoryId" });

@@ -9,6 +9,7 @@ export default defineConfig({
 		globals: true,
 		setupFiles: ["./src/tests/setup.ts"],
 		silent: false,
+		fileParallelism: false, // integration tests share one real DB; parallel files truncate each other's data
 		env: {
 			NODE_ENV: "test",
 			DATABASE_URL: process.env.TEST_DATABASE_URL,
