@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import type { Request } from "express";
 import jwt from "jsonwebtoken";
-import { BCRYPT_SALT_ROUNDS } from "../config/constants";
+import { BCRYPT_SALT_ROUNDS, JWT_SECRET } from "../config/constants";
 import { userRepository } from "../repositories/userRepository";
 
 export const authService = {
@@ -10,7 +10,7 @@ export const authService = {
 		if (!user || !(await bcrypt.compare(password, user.password))) {
 			return null;
 		}
-		const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+		const token = jwt.sign({ userId: user.id }, JWT_SECRET, {
 			expiresIn: "7d",
 		});
 
