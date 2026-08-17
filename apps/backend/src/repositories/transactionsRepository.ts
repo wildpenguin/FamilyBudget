@@ -1,5 +1,5 @@
 import { db } from "../db";
-import { eq, and } from 'drizzle-orm';
+import { eq, and, gte, lte } from 'drizzle-orm';
 import { transactions } from "../db/schema/transactions";
 import { TransactionsType, UpdateTransactionType } from "@ourbudget/shared";
 
@@ -37,11 +37,17 @@ export const transactionsRepository = {
 
         return deleted ?? null;
     },
-    async get(familyId: number, transactionId?: number) {
+    async get(familyId: number, transactionId?: number, filter?: {from?: string, to?: string}) {
         const conditions = [eq(transactions.familyId, familyId)];
 
         if (transactionId) {
             conditions.push(eq(transactions.id, transactionId));
+        }
+        if (filter?.from) {
+            conditions.push(gte(transactions.date, filter.from));
+        }
+        if (filter?.to) {
+            conditions.push(lte(transactions.date, filter.to))
         }
         const results = await db
             .select()

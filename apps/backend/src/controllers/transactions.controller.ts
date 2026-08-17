@@ -12,6 +12,12 @@ const getTransactionInput = z.object({
 const transactionIdParams = z.object({
     id: z.coerce.number(),
 });
+const transactionDateQuery = z.object({
+    filter: z.object({
+        from: z.iso.date().optional(),
+        to: z.iso.date().optional(),
+    })
+})
 
 export const transactionsController = {
 
@@ -31,8 +37,12 @@ export const transactionsController = {
             }
             return res.json({ data: transaction, meta: { total: 1 } });
         }
-
-        const transactions = await transactionsRepository.get(familyMember.familyId);
+        const filterQuery = transactionDateQuery.safeParse(req.query);
+        if (!filterQuery.success) {
+            return res.status(400).json({error: z.treeifyError(filterQuery.error)});
+        }
+        
+        const transactions = await transactionsRepository.get(familyMember.familyId, undefined, );
         return res.json({
             data: transactions,
             meta: {
