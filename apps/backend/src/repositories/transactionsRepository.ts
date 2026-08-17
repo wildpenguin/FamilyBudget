@@ -15,7 +15,7 @@ type BudgetSummary = {
 		categoryId: number;
 		categoryName: string;
 		type: "expense" | "income";
-		totalAmountCents: number;
+		totalAmountCents: string;
 	}[];
 };
 
