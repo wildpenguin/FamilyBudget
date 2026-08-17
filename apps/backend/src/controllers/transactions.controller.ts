@@ -42,7 +42,7 @@ export const transactionsController = {
             return res.status(400).json({error: z.treeifyError(filterQuery.error)});
         }
         
-        const transactions = await transactionsRepository.get(familyMember.familyId, undefined, );
+        const transactions = await transactionsRepository.get(familyMember.familyId, undefined, filterQuery.data.filter);
         return res.json({
             data: transactions,
             meta: {
