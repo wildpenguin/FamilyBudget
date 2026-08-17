@@ -1,10 +1,11 @@
 import { Router } from "express";
 
 import { authRouter } from "./auth.routes";
+import { BudgetsOverviewRouter } from "./budgetsoverview.routes";
 import { categoriesRouter } from "./categories.routes";
 import { familyInviteRouter } from "./familyInvites.routes";
-import { transactionsRouter } from "./transactions.routes";
 import { schedulesRouter } from "./schedules.routes";
+import { transactionsRouter } from "./transactions.routes";
 
 export const router = Router();
 
@@ -13,3 +14,4 @@ router.use("/api", categoriesRouter);
 router.use("/api", familyInviteRouter);
 router.use("/api", transactionsRouter);
 router.use("/api", schedulesRouter);
+router.use("/api", BudgetsOverviewRouter);

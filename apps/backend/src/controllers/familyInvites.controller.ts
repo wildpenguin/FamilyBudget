@@ -1,6 +1,6 @@
-import { AuthenticatedRequest } from "../services/authService";
 import type { Response } from "express";
 import * as z from "zod";
+import type { AuthenticatedRequest } from "../services/authService";
 import { familyInviteService } from "../services/familyInviteService";
 
 const acceptToken = z.object({
@@ -8,19 +8,18 @@ const acceptToken = z.object({
 });
 
 const familyInvitesInput = z.object({
-    invitedEmail: z.email(),
-})
+	invitedEmail: z.email(),
+});
 
 export const FamilyInvitesController = {
 	async create(req: AuthenticatedRequest, res: Response) {
-
 		const body = familyInvitesInput.safeParse(req.body);
 		if (!body.success) {
 			return res.status(400).json(z.treeifyError(body.error));
 		}
 
 		const invite = await familyInviteService.createInvite(
-            body.data.invitedEmail,
+			body.data.invitedEmail,
 			req.userId,
 		);
 		return res.json({
@@ -32,7 +31,6 @@ export const FamilyInvitesController = {
 	},
 
 	async accept(req: AuthenticatedRequest, res: Response) {
-
 		const params = acceptToken.safeParse(req.params);
 		if (!params.success) {
 			return res.status(400).json({ data: "Missing token information" });

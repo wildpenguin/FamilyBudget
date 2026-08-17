@@ -9,7 +9,10 @@ familyInviteRouter.use(authenticate);
 
 // Handlers are typed with AuthenticatedRequest (req.userId guaranteed) since
 // they only ever run after the `authenticate` middleware above.
-familyInviteRouter.post("/familyInvites", FamilyInvitesController.create as RequestHandler);
+familyInviteRouter.post(
+	"/familyInvites",
+	FamilyInvitesController.create as RequestHandler,
+);
 familyInviteRouter.post(
 	"/familyInvites/:token/accept",
 	FamilyInvitesController.accept as RequestHandler,

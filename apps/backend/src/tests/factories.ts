@@ -1,12 +1,12 @@
 import bcrypt from "bcrypt";
 import { BCRYPT_SALT_ROUNDS } from "../config/constants";
 import { db } from "../db";
+import { categories } from "../db/schema/categories";
 import { families } from "../db/schema/families";
 import { familyMembers } from "../db/schema/familyMembers";
-import { users } from "../db/schema/users";
-import { categories } from "../db/schema/categories";
 import { schedules } from "../db/schema/schedules";
 import { transactions } from "../db/schema/transactions";
+import { users } from "../db/schema/users";
 
 export async function createTestUser(overrides = {}) {
 	const hashedPassword = await bcrypt.hash("password123", BCRYPT_SALT_ROUNDS);
@@ -36,22 +36,26 @@ export async function createFamilyMember(familyId: number, userId: number) {
 	return member;
 }
 
-export async function createCategory(name: string, familyId: number, type: "income" | "expense")
-{
+export async function createCategory(
+	name: string,
+	familyId: number,
+	type: "income" | "expense",
+) {
 	return await db
 		.insert(categories)
 		.values({
-			name, 
+			name,
 			familyId,
 			type,
-		}).returning();
+		})
+		.returning();
 }
 
 export async function createTransaction(
 	familyId: number,
 	categoryId: number,
 	description: string,
-	amount: string,
+	amountCents: number,
 	type: "income" | "expense",
 	createdByUserId: number,
 ) {
@@ -61,7 +65,7 @@ export async function createTransaction(
 			familyId,
 			categoryId,
 			description,
-			amount,
+			amountCents,
 			type,
 			createdByUserId,
 		})
@@ -71,17 +75,17 @@ export async function createTransaction(
 }
 
 export async function createSchedule(
-	familyId: number, 
-	categoryId: number, 
-	description: string, 
-	amount: string, 
-	frequency: "once" | "weekly" | 	"biweekly" | "monthly" | "yearly",
+	familyId: number,
+	categoryId: number,
+	description: string,
+	amountCents: number,
+	frequency: "once" | "weekly" | "biweekly" | "monthly" | "yearly",
 	startDate: string,
 	active: boolean,
 	createdByUserId: number,
 	endDate?: string,
 	dayOfMonth?: number,
-	dayOfWeek?: number
+	dayOfWeek?: number,
 ) {
 	return await db
 		.insert(schedules)
@@ -89,13 +93,14 @@ export async function createSchedule(
 			familyId,
 			categoryId,
 			description,
-			amount,
+			amountCents,
 			frequency,
 			startDate,
 			endDate,
 			dayOfMonth,
 			dayOfWeek,
 			active,
-			createdByUserId
-		}).returning();
+			createdByUserId,
+		})
+		.returning();
 }

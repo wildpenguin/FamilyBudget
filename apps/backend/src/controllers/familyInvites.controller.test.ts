@@ -4,7 +4,11 @@ import { describe, expect, it } from "vitest";
 import { db } from "../db";
 import { familyMembers } from "../db/schema/familyMembers";
 import app from "../index";
-import { createFamily, createFamilyMember, createTestUser } from "../tests/factories";
+import {
+	createFamily,
+	createFamilyMember,
+	createTestUser,
+} from "../tests/factories";
 import { loginAs } from "../tests/helpers";
 
 describe("POST /api/familyInvites", () => {

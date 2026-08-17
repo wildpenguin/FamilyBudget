@@ -25,7 +25,7 @@ describe("POST /api/schedules", () => {
 				familyId: family.id,
 				categoryId: category.id,
 				description: "Monthly rent",
-				amount: "-1200.00",
+				amountCents: -120000,
 				frequency: "monthly",
 				startDate: "2026-01-01",
 			});
@@ -35,7 +35,7 @@ describe("POST /api/schedules", () => {
 			familyId: family.id,
 			categoryId: category.id,
 			description: "Monthly rent",
-			amount: "-1200.00",
+			amountCents: -120000,
 			frequency: "monthly",
 			startDate: "2026-01-01",
 		});
@@ -52,7 +52,7 @@ describe("GET /api/schedules", () => {
 			family.id,
 			category.id,
 			"Monthly rent",
-			"-1200.00",
+			-120000,
 			"monthly",
 			"2026-01-01",
 			true,
@@ -77,8 +77,26 @@ describe("GET /api/schedules", () => {
 		const family = await createFamily("Schedule list family");
 		await createFamilyMember(family.id, user.id);
 		const [category] = await createCategory("Bills", family.id, "expense");
-		await createSchedule(family.id, category.id, "Rent", "-1200.00", "monthly", "2026-01-01", true, user.id);
-		await createSchedule(family.id, category.id, "Gym", "-40.00", "monthly", "2026-01-05", true, user.id);
+		await createSchedule(
+			family.id,
+			category.id,
+			"Rent",
+			-120000,
+			"monthly",
+			"2026-01-01",
+			true,
+			user.id,
+		);
+		await createSchedule(
+			family.id,
+			category.id,
+			"Gym",
+			-4000,
+			"monthly",
+			"2026-01-05",
+			true,
+			user.id,
+		);
 		const token = await loginAs("sched-list@test.com");
 
 		const res = await request(app)
@@ -87,10 +105,9 @@ describe("GET /api/schedules", () => {
 
 		expect(res.status).toBe(200);
 		expect(res.body.meta.total).toBe(2);
-		expect(res.body.data.map((s: { description: string }) => s.description).sort()).toEqual([
-			"Gym",
-			"Rent",
-		]);
+		expect(
+			res.body.data.map((s: { description: string }) => s.description).sort(),
+		).toEqual(["Gym", "Rent"]);
 	});
 });
 
@@ -104,7 +121,7 @@ describe("PUT /api/schedules/:id", () => {
 			family.id,
 			category.id,
 			"Monthly rent",
-			"-1200.00",
+			-120000,
 			"monthly",
 			"2026-01-01",
 			true,
@@ -115,12 +132,12 @@ describe("PUT /api/schedules/:id", () => {
 		const res = await request(app)
 			.put(`/api/schedules/${schedule.id}`)
 			.set("Authorization", `Bearer ${token}`)
-			.send({ amount: "-1300.00", description: "Monthly rent, updated" });
+			.send({ amountCents: -130000, description: "Monthly rent, updated" });
 
 		expect(res.status).toBe(200);
 		expect(res.body.data).toMatchObject({
 			id: schedule.id,
-			amount: "-1300.00",
+			amountCents: -130000,
 			description: "Monthly rent, updated",
 		});
 	});
@@ -131,12 +148,16 @@ describe("DELETE /api/schedules/:id", () => {
 		const user = await createTestUser({ email: "sched-delete@test.com" });
 		const family = await createFamily("Schedule delete family");
 		await createFamilyMember(family.id, user.id);
-		const [category] = await createCategory("Subscriptions", family.id, "expense");
+		const [category] = await createCategory(
+			"Subscriptions",
+			family.id,
+			"expense",
+		);
 		const [schedule] = await createSchedule(
 			family.id,
 			category.id,
 			"Streaming",
-			"-15.99",
+			-1599,
 			"monthly",
 			"2026-01-01",
 			true,

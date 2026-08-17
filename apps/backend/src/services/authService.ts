@@ -25,6 +25,5 @@ export const authService = {
 };
 
 export interface AuthenticatedRequest extends Request {
-    userId: number;
+	userId: number;
 }
-

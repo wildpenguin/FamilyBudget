@@ -1,8 +1,7 @@
 import { isPast } from "date-fns";
 import { familyInvitesRepository } from "../repositories/familyInvitesRepository";
-import { userRepository } from "../repositories/userRepository";
 import { familyMembersRepository } from "../repositories/familyMembersRepository";
-
+import { userRepository } from "../repositories/userRepository";
 
 // TODO: Send email to the invite
 // Not sure what email
@@ -13,10 +12,10 @@ export const familyInviteService = {
 		if (!invitedUser) {
 			throw new Error("Invited User must have an account");
 		}
-        const familyMember = await familyMembersRepository.findByUser(userId)
-        if (!familyMember) {
-            throw new Error('Cant find the family for this account');
-        }
+		const familyMember = await familyMembersRepository.findByUser(userId);
+		if (!familyMember) {
+			throw new Error("Cant find the family for this account");
+		}
 		const result = await familyInvitesRepository.create(
 			invitedEmail,
 			familyMember.familyId,

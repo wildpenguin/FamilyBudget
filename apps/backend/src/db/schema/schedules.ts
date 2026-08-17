@@ -13,7 +13,7 @@ export const schedules = p.pgTable("schedules", {
 	familyId: p.integer("family_id").notNull(),
 	categoryId: p.integer("category_id").notNull(),
 	description: p.varchar("description", { length: 255 }).notNull(),
-	amount: p.numeric({ precision: 12, scale: 2 }).notNull(), // positive = income, negative = expense
+	amountCents: p.integer("amount_cents").notNull(), // positive = income, negative = expense
 	frequency: frequencyEnum("frequency").notNull(),
 	startDate: p.date("start_date").notNull(),
 	endDate: p.date("end_date"), // nullable — open-ended
