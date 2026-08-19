@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 export default function BudgetsScreen() {
 	return (
 		<View style={styles.container}>
-			<Text>Budgets</Text>
+			<Text>Maybe not budgets</Text>
 		</View>
 	);
 }
