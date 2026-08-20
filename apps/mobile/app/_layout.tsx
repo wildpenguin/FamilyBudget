@@ -1,18 +1,13 @@
-import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Slot } from "expo-router";
+import { AuthProvider } from "../src/shared/context/AuthContext";
+import { PaperProvider } from 'react-native-paper';
 
 export default function RootLayout() {
 	return (
-		<SafeAreaProvider>
-			<Stack screenOptions={{ headerShown: false }}>
-				<Stack.Screen name="(tabs)" />
-				<Stack.Screen
-					name="budget/[id]"
-					options={{ headerShown: true, title: "Budget" }}
-				/>
-			</Stack>
-			<StatusBar style="auto" />
-		</SafeAreaProvider>
+		<PaperProvider>
+			<AuthProvider>
+				<Slot />
+			</AuthProvider>
+		</PaperProvider>
 	);
 }
