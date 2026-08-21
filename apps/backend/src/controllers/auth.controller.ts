@@ -32,6 +32,7 @@ export const AuthController = {
 			user: {
 				id: user.id,
 				name: user.name,
+				email: user.email,
 			},
 		});
 	},
@@ -41,8 +42,11 @@ export const AuthController = {
 			return res.status(400).json(z.treeifyError(result.error));
 		}
 		const { name, email, password } = result.data;
-		const user = await authService.register(name, email, password);
-
-		return res.json({ user: user });
+		try {
+			const user = await authService.register(name, email, password);
+			return res.json({ user: user });
+		} catch (err) {
+			res.status(400).json(err instanceof Error ? err.message : String(err));
+		}
 	},
 };

@@ -15,10 +15,32 @@ describe("GET /api/budgets/:familyId/overview", () => {
 		const user = await createTestUser({ email: "overview@test.com" });
 		const family = await createFamily("Overview family");
 		await createFamilyMember(family.id, user.id);
-		const [expenseCategory] = await createCategory("Groceries", family.id, "expense");
-		const [incomeCategory] = await createCategory("Salary", family.id, "income");
-		await createTransaction(family.id, expenseCategory.id, "Weekly shop", 15000, "expense", user.id);
-		await createTransaction(family.id, incomeCategory.id, "Paycheck", 200000, "income", user.id);
+		const [expenseCategory] = await createCategory(
+			"Groceries",
+			family.id,
+			"expense",
+		);
+		const [incomeCategory] = await createCategory(
+			"Salary",
+			family.id,
+			"income",
+		);
+		await createTransaction(
+			family.id,
+			expenseCategory.id,
+			"Weekly shop",
+			15000,
+			"expense",
+			user.id,
+		);
+		await createTransaction(
+			family.id,
+			incomeCategory.id,
+			"Paycheck",
+			200000,
+			"income",
+			user.id,
+		);
 		const token = await loginAs("overview@test.com");
 
 		const res = await request(app)

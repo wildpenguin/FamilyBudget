@@ -17,6 +17,10 @@ export const authService = {
 		return { token, user };
 	},
 	async register(name: string, email: string, password: string) {
+		const exists = await userRepository.findByEmail(email);
+		if (exists) {
+			throw new Error("This email is already registered.");
+		}
 		const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
 		const output = await userRepository.create(name, email, hashedPassword);
 

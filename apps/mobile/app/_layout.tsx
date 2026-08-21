@@ -1,6 +1,6 @@
 import { Slot } from "expo-router";
+import { PaperProvider } from "react-native-paper";
 import { AuthProvider } from "../src/shared/context/AuthContext";
-import { PaperProvider } from 'react-native-paper';
 
 export default function RootLayout() {
 	return (

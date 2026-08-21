@@ -8,7 +8,10 @@ export const ScheduleInput = z.object({
 	familyId: z.coerce.number(),
 	categoryId: z.coerce.number(),
 	description: z.string().max(255),
-	amountCents: z.number().int().refine((val) => val !== 0, "Amount must not be zero"),
+	amountCents: z
+		.number()
+		.int()
+		.refine((val) => val !== 0, "Amount must not be zero"),
 	frequency: z.enum(["once", "weekly", "biweekly", "monthly", "yearly"]),
 	startDate: dateString,
 	endDate: dateString.optional(),
