@@ -1,7 +1,10 @@
 import { Tabs } from "expo-router";
 import { Icon } from "react-native-paper";
+import { useAddSheet } from "../../src/shared/context/AddSheetContext";
 
 export default function TabsLayout() {
+	const { openAddSheet } = useAddSheet();
+
 	return (
 		<Tabs screenOptions={{ tabBarActiveTintColor: "#101010" }}>
 			<Tabs.Screen
@@ -9,25 +12,40 @@ export default function TabsLayout() {
 				options={{
 					title: "Overview",
 					tabBarIcon: ({ color, size }) => (
-						<Icon source="view-dashboard" color={color as string} size={size} />
+						<Icon source="home" color={color as string} size={size} />
 					),
 				}}
 			/>
 			<Tabs.Screen
-				name="expenses"
+				name="transactions"
 				options={{
-					title: "Expenses",
+					title: "Transactions",
 					tabBarIcon: ({ color, size }) => (
-						<Icon source="cash-minus" color={color as string} size={size} />
+						<Icon source="hand-coin" color={color as string} size={size} />
 					),
 				}}
 			/>
 			<Tabs.Screen
-				name="income"
+				name="add"
+				listeners={{
+					tabPress: (e) => {
+						e.preventDefault();
+						openAddSheet();
+					},
+				}}
 				options={{
-					title: "Income",
+					title: "Add",
 					tabBarIcon: ({ color, size }) => (
-						<Icon source="cash-plus" color={color as string} size={size} />
+						<Icon source="plus-circle" color="#2b78d6" size={size} />
+					),
+				}}
+			/>
+			<Tabs.Screen
+				name="schedules"
+				options={{
+					title: "Schedules",
+					tabBarIcon: ({ color, size }) => (
+						<Icon source="calendar-refresh" color={color as string} size={size} />
 					),
 				}}
 			/>

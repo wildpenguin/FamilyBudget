@@ -6,4 +6,5 @@ export const colors = {
 	textMuted: "#6b7280",
 	primary: "#2563eb",
 	danger: "#dc2626",
+	outlineVariant: "#e5e7eb",
 };

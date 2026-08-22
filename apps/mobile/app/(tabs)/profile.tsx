@@ -52,9 +52,8 @@ export default function ProfileScreen() {
 			</View>
 
 			<Button
-				mode="outlined"
+				mode="contained"
 				icon="logout"
-				textColor={theme.colors.error}
 				onPress={handleLogout}
 				loading={isLoggingOut}
 				disabled={isLoggingOut}
@@ -95,7 +94,6 @@ const styles = StyleSheet.create({
 		opacity: 0.5,
 	},
 	logoutButton: {
-		width: "100%",
 		marginTop: 32,
 		borderRadius: 8,
 	},

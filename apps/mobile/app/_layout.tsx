@@ -1,12 +1,31 @@
 import { Slot } from "expo-router";
-import { PaperProvider } from "react-native-paper";
+import { MD3LightTheme, PaperProvider } from "react-native-paper";
+import { AddSheetProvider } from "../src/shared/context/AddSheetContext";
 import { AuthProvider } from "../src/shared/context/AuthContext";
+import { colors } from "../src/shared/theme";
+
+const theme = {
+	...MD3LightTheme,
+	colors: {
+		...MD3LightTheme.colors,
+		primary: colors.primary,
+		background: colors.background,
+		surface: colors.surface,
+		outline: colors.border,
+		outlineVariant: colors.outlineVariant,
+		onSurface: colors.text,
+		onSurfaceVariant: colors.textMuted,
+		error: colors.danger,
+	},
+};
 
 export default function RootLayout() {
 	return (
-		<PaperProvider>
+		<PaperProvider theme={theme}>
 			<AuthProvider>
-				<Slot />
+				<AddSheetProvider>
+					<Slot />
+				</AddSheetProvider>
 			</AuthProvider>
 		</PaperProvider>
 	);
