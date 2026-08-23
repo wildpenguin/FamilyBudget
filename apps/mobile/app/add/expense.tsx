@@ -1,17 +1,17 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from "react-native";
 
 export default function AddExpenseScreen() {
-    return (
-        <View style={styles.container}>
-            <Text>Add Expense</Text>
-        </View>
-    );
+	return (
+		<View style={styles.container}>
+			<Text>Add Expense</Text>
+		</View>
+	);
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+	container: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+	},
 });

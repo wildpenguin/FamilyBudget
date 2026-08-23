@@ -45,7 +45,11 @@ export default function TabsLayout() {
 				options={{
 					title: "Schedules",
 					tabBarIcon: ({ color, size }) => (
-						<Icon source="calendar-refresh" color={color as string} size={size} />
+						<Icon
+							source="calendar-refresh"
+							color={color as string}
+							size={size}
+						/>
 					),
 				}}
 			/>
