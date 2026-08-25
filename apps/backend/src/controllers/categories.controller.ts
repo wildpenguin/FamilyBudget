@@ -2,6 +2,7 @@ import { createCategorySchema, getCategorySchema } from "@ourbudget/shared";
 import type { Response } from "express";
 import * as z from "zod";
 import { categoryRepository } from "../repositories/categoryRepository";
+import { familyMembersRepository } from "../repositories/familyMembersRepository";
 import type { AuthenticatedRequest } from "../services/authService";
 
 const listCategoriesSchema = getCategorySchema
@@ -62,7 +63,16 @@ export const CategoriesController = {
 		if (!parsedBody.success) {
 			return res.status(400).json(z.treeifyError(parsedBody.error));
 		}
-		const result = await categoryRepository.create(parsedBody.data, req.userId);
+		const membership = await familyMembersRepository.findByUser(req.userId);
+		console.log("memeber=", membership);
+		if (!membership) {
+			return res.status(400).json({ error: "Missing familyId ddd" });
+		}
+		const result = await categoryRepository.create(
+			parsedBody.data,
+			req.userId,
+			membership.familyId,
+		);
 
 		return res.json({ data: result });
 	},

@@ -9,7 +9,7 @@ export const frequencyEnum = p.pgEnum("frequency", [
 ]);
 
 export const schedules = p.pgTable("schedules", {
-	id: p.serial("id").primaryKey(),
+	id: p.integer().primaryKey().generatedAlwaysAsIdentity(),
 	familyId: p.integer("family_id").notNull(),
 	categoryId: p.integer("category_id").notNull(),
 	description: p.varchar("description", { length: 255 }).notNull(),

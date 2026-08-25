@@ -5,7 +5,8 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import { API_URL } from "../utils/apiConfig";
+import { TOKEN_KEY, USER_KEY } from "../constants";
+import { API_PREFIX } from "../utils/apiConfig";
 import { storage } from "../utils/storage";
 
 // --- Types ---
@@ -30,11 +31,6 @@ type AuthProviderProps = {
 // --- Context ---
 
 const AuthContext = createContext<AuthContextType | null>(null);
-
-const TOKEN_KEY = "authToken";
-const USER_KEY = "authUser";
-
-// --- Provider ---
 
 export function AuthProvider({ children }: AuthProviderProps) {
 	const [user, setUser] = useState<User | null>(null);
@@ -71,12 +67,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	}
 
 	async function login(email: string, password: string): Promise<void> {
-		const response = await fetch(`${API_URL}/auth/login`, {
+		const response = await fetch(`${API_PREFIX}/auth/login`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ email, password }),
 		});
-		console.log("res=", response);
 
 		if (!response.ok) {
 			throw new Error("Invalid email or password");
@@ -94,7 +89,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 		password: string,
 		name: string,
 	): Promise<void> {
-		const response = await fetch(`${API_URL}/auth/register`, {
+		const response = await fetch(`${API_PREFIX}/auth/register`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ email, password, name }),

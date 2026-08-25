@@ -61,21 +61,11 @@ export const categoryRepository = {
 			.returning();
 		return result[0] ?? null;
 	},
-	async create(category: CreateCategory, userId?: number) {
-		if (!userId) {
-			return null;
-		}
-		const familyMembership = await familyMembersRepository.findByUser(userId);
-		if (!familyMembership) {
-			return null;
-		}
-		if (category.familyId !== familyMembership.familyId) {
-			return null;
-		}
+	async create(category: CreateCategory, userId: number, familyId: number) {
 		const result = await db
 			.insert(categories)
 			.values({
-				familyId: category.familyId,
+				familyId,
 				name: category.name,
 				type: category.type,
 			})

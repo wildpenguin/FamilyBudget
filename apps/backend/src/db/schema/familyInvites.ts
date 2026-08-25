@@ -1,7 +1,7 @@
 import * as p from "drizzle-orm/pg-core";
 
 export const familyInvites = p.pgTable("family_invites", {
-	id: p.serial("id").primaryKey(),
+	id: p.integer().primaryKey().generatedAlwaysAsIdentity(),
 	familyId: p.integer("family_id").notNull(),
 	invitedEmail: p.varchar("invited_email", { length: 100 }).notNull(),
 	invitedByUserId: p.integer("invited_by_user_id").notNull(),

@@ -1,8 +1,6 @@
+import { CATEGORIES_KEY, type CreateCategory } from "@ourbudget/shared";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { CreateCategoryInput } from "./category";
 import { createCategory, deleteCategory, fetchCategories } from "./categoryApi";
-
-const CATEGORIES_KEY = ["categories"];
 
 export function useCategoriesQuery() {
 	return useQuery({
@@ -15,7 +13,7 @@ export function useCreateCategoryMutation() {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: (input: CreateCategoryInput) => createCategory(input),
+		mutationFn: (input: CreateCategory) => createCategory(input),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY });
 		},

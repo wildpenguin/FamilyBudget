@@ -9,7 +9,7 @@ export const transactionStatusEnum = p.pgEnum("transaction_status", [
 ]);
 
 export const transactions = p.pgTable("transactions", {
-	id: p.serial("id").primaryKey(),
+	id: p.integer().primaryKey().generatedAlwaysAsIdentity(),
 	familyId: p.integer("family_id").notNull(),
 	categoryId: p.integer("category_id").notNull(),
 	scheduleId: p.integer("schedule_id"),
