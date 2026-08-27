@@ -1,3 +1,4 @@
+import type { CategoryType, CreateCategory } from "@ourbudget/shared";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import {
@@ -6,8 +7,6 @@ import {
 	SegmentedButtons,
 	TextInput,
 } from "react-native-paper";
-
-import type { CreateCategory, CategoryType } from "@ourbudget/shared";
 
 type CategoryFormProps = {
 	onSave: (input: CreateCategory) => void;

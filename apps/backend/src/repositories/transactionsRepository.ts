@@ -20,7 +20,11 @@ type BudgetSummary = {
 };
 
 export const transactionsRepository = {
-	async create(transaction: InputTransactionsType, userId: number, familyId: number) {
+	async create(
+		transaction: InputTransactionsType,
+		userId: number,
+		familyId: number,
+	) {
 		const [saved] = await db
 			.insert(transactions)
 			.values({
@@ -71,10 +75,10 @@ export const transactionsRepository = {
 	async get(
 		familyId: number,
 		transactionId?: number,
-		filter?: { from?: string; to?: string; type?: 'expense'|'income' },
+		filter?: { from?: string; to?: string; type?: "expense" | "income" },
 	) {
 		const conditions = [eq(transactions.familyId, familyId)];
-		console.log('filter=', filter);
+		console.log("filter=", filter);
 		if (transactionId) {
 			conditions.push(eq(transactions.id, transactionId));
 		}

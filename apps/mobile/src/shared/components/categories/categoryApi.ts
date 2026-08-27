@@ -2,7 +2,7 @@ import type { CreateCategory, GetCategory } from "@ourbudget/shared";
 import { apiFetch } from "../../utils/apiConfig";
 
 export async function fetchCategories(): Promise<GetCategory[]> {
-	const response = await apiFetch(`/categories`, { method: 'GET' });
+	const response = await apiFetch(`/categories`, { method: "GET" });
 	return response.data;
 }
 

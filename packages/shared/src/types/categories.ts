@@ -16,9 +16,9 @@ export const createCategorySchema = z.object({
 export type CategoryType = "income" | "expense";
 
 export type GetCategory = {
-	id: number,
-	name: string,
-	type: CategoryType,
+	id: number;
+	name: string;
+	type: CategoryType;
 };
 export type CreateCategory = z.infer<typeof createCategorySchema>;
 

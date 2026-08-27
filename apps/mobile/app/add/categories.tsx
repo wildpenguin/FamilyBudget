@@ -1,10 +1,9 @@
+import type { GetCategory } from "@ourbudget/shared";
 import { FlatList, StyleSheet, View } from "react-native";
 import { ActivityIndicator, Divider, Text, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
 import { CategoryForm } from "../../src/shared/components/categories/CategoryForm";
 import { CategoryListItem } from "../../src/shared/components/categories/CategoryListItem";
-import type { GetCategory } from "@ourbudget/shared";
 import {
 	useCategoriesQuery,
 	useCreateCategoryMutation,

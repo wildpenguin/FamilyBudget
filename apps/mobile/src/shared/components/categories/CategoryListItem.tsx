@@ -1,7 +1,6 @@
+import type { CreateCategory, GetCategory } from "@ourbudget/shared";
 import { StyleSheet, View } from "react-native";
 import { Icon, IconButton, Text, useTheme } from "react-native-paper";
-
-import type { CreateCategory, GetCategory } from "@ourbudget/shared";
 
 type CategoryListItemProps = {
 	category: GetCategory;
@@ -27,7 +26,9 @@ export function CategoryListItem({
 
 	return (
 		<View style={styles.row}>
-			<View style={[styles.iconCircle, isIncome ? styles.income : styles.expense]}>
+			<View
+				style={[styles.iconCircle, isIncome ? styles.income : styles.expense]}
+			>
 				<Icon
 					source={isIncome ? "arrow-up" : "arrow-down"}
 					size={16}
@@ -72,9 +73,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	income: {
-		backgroundColor: "#caeac7"
+		backgroundColor: "#caeac7",
 	},
 	expense: {
 		backgroundColor: "#fad6d6",
-	}
+	},
 });

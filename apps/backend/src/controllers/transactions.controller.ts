@@ -13,10 +13,11 @@ const transactionIdParams = z.object({
 	id: z.coerce.number(),
 });
 const transactionDateQuery = z.object({
-	filter: z.object({
+	filter: z
+		.object({
 			from: z.iso.date().optional(),
 			to: z.iso.date().optional(),
-			type: z.enum(['expense', 'income']).optional(),
+			type: z.enum(["expense", "income"]).optional(),
 		})
 		.optional(),
 });
@@ -64,12 +65,14 @@ export const transactionsController = {
 		}
 		const member = await familyMembersRepository.findByUser(req.userId);
 		if (!member?.familyId) {
-			return res.status(403).json({ error: "FamilyId is missing for the current user" });
+			return res
+				.status(403)
+				.json({ error: "FamilyId is missing for the current user" });
 		}
 		const transaction = await transactionsRepository.create(
 			parsedBody.data,
 			req.userId,
-			member.familyId
+			member.familyId,
 		);
 		return res.json({ data: transaction });
 	},
