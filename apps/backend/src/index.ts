@@ -6,10 +6,7 @@ import { router } from "./routes";
 const app = express();
 const port = process.env.PORT ?? 3000;
 
-// Express 5 defaults to the 'simple' query parser (Node's querystring),
-// which doesn't understand bracket notation like `filter[type]=expense`.
-// 'extended' restores qs-based nested parsing, which several endpoints
-// (transactions, budgets overview) rely on for `filter[from]`/`filter[to]`/`filter[type]`.
+// Make the complex query work `filter[type]=expense`.
 app.set("query parser", "extended");
 
 app.use(cors());

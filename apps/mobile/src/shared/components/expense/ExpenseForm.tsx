@@ -11,7 +11,11 @@ import {
 	TouchableRipple,
 	useTheme,
 } from "react-native-paper";
-import { DatePickerInput } from "react-native-paper-dates";
+import {
+	DatePickerInput,
+	en,
+	registerTranslation,
+} from "react-native-paper-dates";
 import { dollarsToCents } from "../../utils/money";
 import { useCategoriesQuery } from "../categories/useCategories";
 
@@ -19,6 +23,7 @@ type ExpenseFormProps = {
 	onSave: (input: InputTransactionsType) => void;
 	isSaving: boolean;
 };
+registerTranslation("en", en);
 
 export function ExpenseForm({ onSave, isSaving }: ExpenseFormProps) {
 	const theme = useTheme();

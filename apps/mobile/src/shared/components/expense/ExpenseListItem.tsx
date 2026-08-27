@@ -1,10 +1,11 @@
+import type { GetTransactionType } from "@ourbudget/shared";
 import { StyleSheet, View } from "react-native";
 import { Icon, IconButton, Text, useTheme } from "react-native-paper";
 import { centsToDollars } from "../../utils/money";
 
 type ExpenseListItemProps = {
-	expense: Expense;
-	onDelete: (id: string) => void;
+	expense: GetTransactionType;
+	onDelete: (id: number) => void;
 	isDeleting: boolean;
 };
 
