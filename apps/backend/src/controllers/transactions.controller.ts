@@ -13,10 +13,10 @@ const transactionIdParams = z.object({
 	id: z.coerce.number(),
 });
 const transactionDateQuery = z.object({
-	filter: z
-		.object({
+	filter: z.object({
 			from: z.iso.date().optional(),
 			to: z.iso.date().optional(),
+			type: z.enum(['expense', 'income']).optional(),
 		})
 		.optional(),
 });
@@ -45,7 +45,6 @@ export const transactionsController = {
 		if (!filterQuery.success) {
 			return res.status(400).json({ error: z.treeifyError(filterQuery.error) });
 		}
-
 		const transactions = await transactionsRepository.get(
 			familyMember.familyId,
 			undefined,
@@ -64,12 +63,13 @@ export const transactionsController = {
 			return res.status(400).json({ error: z.treeifyError(parsedBody.error) });
 		}
 		const member = await familyMembersRepository.findByUser(req.userId);
-		if (member?.familyId !== parsedBody.data.familyId) {
-			return res.status(403).json({ error: "Group mismatch for this user" });
+		if (!member?.familyId) {
+			return res.status(403).json({ error: "FamilyId is missing for the current user" });
 		}
 		const transaction = await transactionsRepository.create(
 			parsedBody.data,
 			req.userId,
+			member.familyId
 		);
 		return res.json({ data: transaction });
 	},

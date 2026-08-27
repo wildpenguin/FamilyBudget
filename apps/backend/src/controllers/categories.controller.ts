@@ -64,7 +64,6 @@ export const CategoriesController = {
 			return res.status(400).json(z.treeifyError(parsedBody.error));
 		}
 		const membership = await familyMembersRepository.findByUser(req.userId);
-		console.log("memeber=", membership);
 		if (!membership) {
 			return res.status(400).json({ error: "Missing familyId ddd" });
 		}

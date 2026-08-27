@@ -1,5 +1,5 @@
 import type {
-	TransactionsType,
+	InputTransactionsType,
 	UpdateTransactionType,
 } from "@ourbudget/shared";
 import { and, eq, gte, lte, sql } from "drizzle-orm";
@@ -20,11 +20,11 @@ type BudgetSummary = {
 };
 
 export const transactionsRepository = {
-	async create(transaction: TransactionsType, userId: number) {
+	async create(transaction: InputTransactionsType, userId: number, familyId: number) {
 		const [saved] = await db
 			.insert(transactions)
 			.values({
-				familyId: transaction.familyId,
+				familyId: familyId,
 				categoryId: transaction.categoryId,
 				scheduleId: transaction.scheduleId,
 				amountCents: transaction.amountCents,
@@ -71,10 +71,10 @@ export const transactionsRepository = {
 	async get(
 		familyId: number,
 		transactionId?: number,
-		filter?: { from?: string; to?: string },
+		filter?: { from?: string; to?: string; type?: 'expense'|'income' },
 	) {
 		const conditions = [eq(transactions.familyId, familyId)];
-
+		console.log('filter=', filter);
 		if (transactionId) {
 			conditions.push(eq(transactions.id, transactionId));
 		}
@@ -83,6 +83,9 @@ export const transactionsRepository = {
 		}
 		if (filter?.to) {
 			conditions.push(lte(transactions.date, filter.to));
+		}
+		if (filter?.type) {
+			conditions.push(eq(transactions.type, filter.type));
 		}
 		const results = await db
 			.select()

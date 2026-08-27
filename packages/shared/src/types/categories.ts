@@ -13,7 +13,13 @@ export const createCategorySchema = z.object({
 	type: z.enum(["income", "expense"]),
 });
 
-export type GetCategory = z.infer<typeof getCategorySchema>;
+export type CategoryType = "income" | "expense";
+
+export type GetCategory = {
+	id: number,
+	name: string,
+	type: CategoryType,
+};
 export type CreateCategory = z.infer<typeof createCategorySchema>;
 
 export const CATEGORIES_KEY = ["categories"];

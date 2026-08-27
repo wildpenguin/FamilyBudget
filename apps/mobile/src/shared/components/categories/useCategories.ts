@@ -24,7 +24,7 @@ export function useDeleteCategoryMutation() {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: (id: string) => deleteCategory(id),
+		mutationFn: (id: number) => deleteCategory(id),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY });
 		},

@@ -7,10 +7,10 @@ import {
 	TextInput,
 } from "react-native-paper";
 
-import type { CategoryType, CreateCategoryInput } from "./category";
+import type { CreateCategory, CategoryType } from "@ourbudget/shared";
 
 type CategoryFormProps = {
-	onSave: (input: CreateCategoryInput) => void;
+	onSave: (input: CreateCategory) => void;
 	isSaving: boolean;
 };
 

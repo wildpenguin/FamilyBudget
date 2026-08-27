@@ -3,7 +3,6 @@ import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import { db } from "../db";
 import { categories } from "../db/schema/categories";
 import { familyMembers } from "../db/schema/familyMembers";
-import { familyMembersRepository } from "./familyMembersRepository";
 
 type ListFilters = {
 	userId?: number;

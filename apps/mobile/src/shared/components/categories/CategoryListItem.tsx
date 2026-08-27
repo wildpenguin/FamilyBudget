@@ -1,11 +1,11 @@
 import { StyleSheet, View } from "react-native";
 import { Icon, IconButton, Text, useTheme } from "react-native-paper";
 
-import type { Category } from "./category";
+import type { CreateCategory, GetCategory } from "@ourbudget/shared";
 
 type CategoryListItemProps = {
-	category: Category;
-	onDelete: (id: string) => void;
+	category: GetCategory;
+	onDelete: (id: number) => void;
 	isDeleting: boolean;
 };
 
@@ -19,17 +19,15 @@ export function CategoryListItem({
 
 	const tint = isIncome
 		? {
-				background: theme.colors.tertiaryContainer,
 				foreground: theme.colors.tertiary,
 			}
 		: {
-				background: theme.colors.errorContainer,
 				foreground: theme.colors.error,
 			};
 
 	return (
 		<View style={styles.row}>
-			<View style={[styles.iconCircle, { backgroundColor: tint.background }]}>
+			<View style={[styles.iconCircle, isIncome ? styles.income : styles.expense]}>
 				<Icon
 					source={isIncome ? "arrow-up" : "arrow-down"}
 					size={16}
@@ -73,4 +71,10 @@ const styles = StyleSheet.create({
 	textContainer: {
 		flex: 1,
 	},
+	income: {
+		backgroundColor: "#caeac7"
+	},
+	expense: {
+		backgroundColor: "#fad6d6",
+	}
 });

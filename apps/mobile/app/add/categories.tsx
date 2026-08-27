@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { CategoryForm } from "../../src/shared/components/categories/CategoryForm";
 import { CategoryListItem } from "../../src/shared/components/categories/CategoryListItem";
-import type { Category } from "../../src/shared/components/categories/category";
+import type { GetCategory } from "@ourbudget/shared";
 import {
 	useCategoriesQuery,
 	useCreateCategoryMutation,
@@ -20,11 +20,11 @@ export default function CategoriesScreen() {
 	const deleteMutation = useDeleteCategoryMutation();
 
 	return (
-		<FlatList<Category>
+		<FlatList<GetCategory>
 			style={{ backgroundColor: theme.colors.background }}
 			contentContainerStyle={[styles.content, { paddingTop: insets.top + 16 }]}
 			data={categoriesQuery.data ?? []}
-			keyExtractor={(item) => item.id}
+			keyExtractor={(item) => String(item.id)}
 			ListHeaderComponent={
 				<View>
 					<Text style={[styles.title, { color: theme.colors.onSurface }]}>

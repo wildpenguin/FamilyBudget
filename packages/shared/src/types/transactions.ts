@@ -1,16 +1,16 @@
 import { z } from "zod";
 
 export const TransactionsInput = z.object({
-	familyId: z.coerce.number(),
 	categoryId: z.coerce.number(),
 	scheduleId: z.coerce.number().optional(),
 	amountCents: z.number().int().positive(),
 	type: z.enum(["income", "expense"]),
 	description: z.string().max(255),
 	status: z.enum(["actual", "projected", "skipped"]).optional(),
+	date: z.coerce.date().optional(),
 });
 
-export type TransactionsType = z.infer<typeof TransactionsInput>;
+export type InputTransactionsType = z.infer<typeof TransactionsInput>;
 
 export const UpdateTransactionInput = TransactionsInput.pick({
 	categoryId: true,
@@ -26,3 +26,16 @@ export const UpdateTransactionInput = TransactionsInput.pick({
 	);
 
 export type UpdateTransactionType = z.infer<typeof UpdateTransactionInput>;
+
+export type GetTransactionType = {
+	id: number;
+	familyId: number;
+	categoryId: number;
+	scheduleId?: number;
+	createdByUserId: number;
+	amountCents: number;
+	type: "expense" | "income";
+	date: string;
+	description?: string;
+	status: string;
+};

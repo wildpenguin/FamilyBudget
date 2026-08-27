@@ -10,7 +10,7 @@ categoriesRouter.use(authenticate);
 // Handlers are typed with AuthenticatedRequest (req.userId guaranteed) since
 // they only ever run after the `authenticate` middleware above.
 categoriesRouter.get(
-	"/categories/:familyId",
+	"/categories",
 	CategoriesController.list as RequestHandler,
 );
 categoriesRouter.put(
