@@ -7,6 +7,10 @@ export const BudgetsOverviewRouter = Router();
 BudgetsOverviewRouter.use(authenticate);
 
 BudgetsOverviewRouter.get(
-	"/budgets/:familyId/overview",
+	"/budgets/overview",
 	BudgetsOverviewController.overview as RequestHandler,
+);
+BudgetsOverviewRouter.get(
+	"/budgets/monthly",
+	BudgetsOverviewController.monthlyChart as RequestHandler,
 );

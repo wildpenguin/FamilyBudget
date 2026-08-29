@@ -5,14 +5,15 @@ export default function AddStackLayout() {
 	return (
 		<Stack
 			screenOptions={{
-				headerRight: () => (
-					<IconButton icon="home" onPress={() => router.replace("/(tabs)")} />
+				presentation: "modal",
+				headerLeft: () => (
+					<IconButton icon="close" onPress={() => router.back()} />
 				),
 			}}
 		>
-			<Stack.Screen name="categories" options={{ title: "Add Category" }} />
-			<Stack.Screen name="income" options={{ title: "Add Income" }} />
-			<Stack.Screen name="expense" options={{ title: "Add Expense" }} />
+			<Stack.Screen name="categories" options={{ title: "Categories" }} />
+			<Stack.Screen name="income" options={{ title: "Income" }} />
+			<Stack.Screen name="expense" options={{ title: "Expenses" }} />
 		</Stack>
 	);
 }

@@ -58,6 +58,7 @@ export async function createTransaction(
 	amountCents: number,
 	type: "income" | "expense",
 	createdByUserId: number,
+	overrides: Partial<{ date: string }> = {},
 ) {
 	const [transaction] = await db
 		.insert(transactions)
@@ -68,6 +69,7 @@ export async function createTransaction(
 			amountCents,
 			type,
 			createdByUserId,
+			...overrides,
 		})
 		.returning();
 

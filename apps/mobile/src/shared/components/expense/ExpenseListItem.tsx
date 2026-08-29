@@ -1,11 +1,11 @@
-import type { GetTransactionType } from "@ourbudget/shared";
 import { StyleSheet, View } from "react-native";
-import { Icon, IconButton, Text, useTheme } from "react-native-paper";
+import { Icon, IconButton, Text } from "react-native-paper";
+import { useAppTheme } from "../../theme";
 import { centsToDollars } from "../../utils/money";
 
 type ExpenseListItemProps = {
-	expense: GetTransactionType;
-	onDelete: (id: number) => void;
+	expense: Expense;
+	onDelete: (id: string) => void;
 	isDeleting: boolean;
 };
 
@@ -19,15 +19,12 @@ export function ExpenseListItem({
 	onDelete,
 	isDeleting,
 }: ExpenseListItemProps) {
-	const theme = useTheme();
+	const theme = useAppTheme();
 
 	return (
 		<View style={styles.row}>
 			<View
-				style={[
-					styles.iconCircle,
-					{ backgroundColor: theme.colors.errorContainer },
-				]}
+				style={[styles.iconCircle, { backgroundColor: theme.colors.expense }]}
 			>
 				<Icon source="arrow-down" size={16} color={theme.colors.error} />
 			</View>
@@ -49,8 +46,8 @@ export function ExpenseListItem({
 
 			<Text
 				style={{
-					fontSize: 14,
-					fontWeight: "600",
+					fontSize: 15,
+					fontWeight: "400",
 					color: theme.colors.error,
 					marginRight: 4,
 				}}

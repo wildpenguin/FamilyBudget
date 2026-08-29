@@ -67,7 +67,6 @@ describe("POST /api/categories", () => {
 			.set("Authorization", `Bearer ${token}`)
 			.send({ name: "Vacation" });
 
-		console.log(res.body.data);
 		expect(res.status).toBe(200);
 		expect(res.body.data.name).toMatch("Vacation");
 	});

@@ -1,7 +1,8 @@
 export type BalanceSummary = {
-	currentBalance: number;
-	currency: string;
-	percentChangeVsLastMonth: number;
+	totalIncomeCents: number;
+	totalExpensesCents: number;
+	totalNetCents: number;
+	byCategory: [];
 };
 
 export type PeriodSummary = {

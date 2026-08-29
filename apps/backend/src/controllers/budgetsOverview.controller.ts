@@ -12,20 +12,15 @@ const overviewQuery = z.object({
 		})
 		.optional(),
 });
-const overviewParams = z.object({
-	familyId: z.coerce.number(),
+
+const chartQuery = z.object({
+	months: z.coerce.number().int(),
 });
 
 export const BudgetsOverviewController = {
 	async overview(req: AuthenticatedRequest, res: Response) {
-		const parsedParams = overviewParams.safeParse(req.params);
-		if (!parsedParams.success) {
-			return res
-				.status(400)
-				.json({ error: z.treeifyError(parsedParams.error) });
-		}
 		const familyMember = await familyMembersRepository.findByUser(req.userId);
-		if (familyMember?.familyId !== parsedParams.data.familyId) {
+		if (!familyMember?.familyId) {
 			return res
 				.status(403)
 				.json({ error: "The current user is missing from requested family" });
@@ -35,13 +30,36 @@ export const BudgetsOverviewController = {
 			return res.status(400).json({ error: z.treeifyError(parsedQuery.error) });
 		}
 		const overview = await budgetsOverviewService.getOverview(
-			parsedParams.data.familyId,
+			familyMember.familyId,
 			parsedQuery.data.filter,
 		);
 		return res.json({
 			data: overview,
 			meta: {
 				total: overview.byCategory.length,
+			},
+		});
+	},
+	async monthlyChart(req: AuthenticatedRequest, res: Response) {
+		const familyMember = await familyMembersRepository.findByUser(req.userId);
+		if (!familyMember?.familyId) {
+			return res
+				.status(403)
+				.json({ error: "The current user is missing from requested family" });
+		}
+		const chart = chartQuery.safeParse(req.query);
+		if (!chart.success) {
+			return res.status(400).json(z.treeifyError(chart.error));
+		}
+		const monthlyChart = await budgetsOverviewService.getMonthlyChart(
+			familyMember.familyId,
+			chart.data.months,
+		);
+
+		return res.json({
+			data: monthlyChart,
+			meta: {
+				total: monthlyChart.length,
 			},
 		});
 	},

@@ -7,4 +7,6 @@ export const colors = {
 	primary: "#2563eb",
 	danger: "#dc2626",
 	outlineVariant: "#e5e7eb",
+	income: "#caeac7",
+	expense: "#fad6d6",
 };

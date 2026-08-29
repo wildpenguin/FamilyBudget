@@ -27,7 +27,7 @@ export default function CategoriesScreen() {
 			ListHeaderComponent={
 				<View>
 					<Text style={[styles.title, { color: theme.colors.onSurface }]}>
-						Categories
+						Add Category
 					</Text>
 
 					<CategoryForm

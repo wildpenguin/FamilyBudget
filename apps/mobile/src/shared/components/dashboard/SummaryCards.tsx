@@ -1,33 +1,34 @@
 import { StyleSheet, View } from "react-native";
-import { Icon, type MD3Theme, Text, useTheme } from "react-native-paper";
-
-import type { PeriodSummary } from "./dashboard";
+import { Icon, type MD3Theme, Text } from "react-native-paper";
+import { useAppTheme } from "../../theme";
+import { centsToDollars } from "../../utils/money";
+import type { BalanceSummary } from "./dashboard";
 
 type SummaryCardsProps = {
-	data: PeriodSummary | undefined;
+	data: BalanceSummary | undefined;
 };
 
 export function SummaryCards({ data }: SummaryCardsProps) {
-	const theme = useTheme();
+	const theme = useAppTheme();
 
 	return (
 		<View style={styles.row}>
 			<SummaryCard
 				label="Income"
-				amount={data?.totalIncome}
+				amount={centsToDollars(data?.totalIncomeCents)}
 				icon="arrow-up"
 				tint={{
-					background: theme.colors.tertiaryContainer,
+					background: theme.colors.income,
 					foreground: theme.colors.tertiary,
 				}}
 				theme={theme}
 			/>
 			<SummaryCard
 				label="Expenses"
-				amount={data?.totalExpenses}
+				amount={centsToDollars(data?.totalExpensesCents)}
 				icon="arrow-down"
 				tint={{
-					background: theme.colors.errorContainer,
+					background: theme.colors.expense,
 					foreground: theme.colors.error,
 				}}
 				theme={theme}
@@ -59,7 +60,12 @@ function SummaryCard({ label, amount, icon, tint, theme }: SummaryCardProps) {
 					{label}
 				</Text>
 			</View>
-			<Text style={[styles.amount, { color: theme.colors.onSurface }]}>
+			<Text
+				style={[
+					styles.amount,
+					{ color: theme.colors.onSurface, fontWeight: 500 },
+				]}
+			>
 				{formatted}
 			</Text>
 		</View>

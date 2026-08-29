@@ -7,7 +7,7 @@ import {
 	Text,
 	useTheme,
 } from "react-native-paper";
-
+import { centsToDollars } from "../../utils/money";
 import type { BalanceSummary } from "./dashboard";
 
 type BalanceCardProps = {
@@ -19,14 +19,7 @@ export function BalanceCard({ data, isLoading }: BalanceCardProps) {
 	const theme = useTheme();
 	const [isHidden, setIsHidden] = useState(false);
 
-	const formattedBalance = data
-		? new Intl.NumberFormat("en-US", {
-				style: "currency",
-				currency: data.currency,
-			}).format(data.currentBalance)
-		: "—";
-
-	const isPositiveTrend = (data?.percentChangeVsLastMonth ?? 0) >= 0;
+	const formattedBalance = data ? centsToDollars(data.totalNetCents) : "—";
 
 	return (
 		<View style={[styles.card, { backgroundColor: theme.colors.primary }]}>
@@ -52,27 +45,6 @@ export function BalanceCard({ data, isLoading }: BalanceCardProps) {
 				<Text style={[styles.balance, { color: theme.colors.onPrimary }]}>
 					{isHidden ? "••••••" : formattedBalance}
 				</Text>
-			)}
-
-			{data && !isLoading && (
-				<View style={styles.trendRow}>
-					<View style={styles.trendPill}>
-						<Icon
-							source={isPositiveTrend ? "trending-up" : "trending-down"}
-							size={12}
-							color={theme.colors.onPrimary}
-						/>
-						<Text style={[styles.trendText, { color: theme.colors.onPrimary }]}>
-							{isPositiveTrend ? "+" : ""}
-							{data.percentChangeVsLastMonth}%
-						</Text>
-					</View>
-					<Text
-						style={[styles.trendCaption, { color: theme.colors.onPrimary }]}
-					>
-						vs last month
-					</Text>
-				</View>
 			)}
 		</View>
 	);

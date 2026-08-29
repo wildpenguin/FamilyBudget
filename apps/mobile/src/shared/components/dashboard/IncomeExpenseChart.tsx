@@ -1,5 +1,6 @@
 import { StyleSheet, View } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { Text } from "react-native-paper";
+import { useAppTheme } from "../../theme";
 
 import type { MonthlyChartPoint } from "./dashboard";
 
@@ -10,8 +11,8 @@ type IncomeExpenseChartProps = {
 const CHART_HEIGHT = 60;
 
 export function IncomeExpenseChart({ data }: IncomeExpenseChartProps) {
-	const theme = useTheme();
-
+	const theme = useAppTheme();
+	console.log("data=", data);
 	if (!data || data.length === 0) {
 		return null;
 	}
@@ -57,7 +58,7 @@ export function IncomeExpenseChart({ data }: IncomeExpenseChartProps) {
 												(point.income / maxValue) * CHART_HEIGHT,
 												4,
 											),
-											backgroundColor: theme.colors.tertiary,
+											backgroundColor: theme.colors.primary,
 											opacity: isCurrent ? 1 : 0.55,
 										},
 									]}
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 	},
 	chartContainer: {
-		borderRadius: 16,
+		borderRadius: 12,
 		paddingHorizontal: 12,
 		paddingTop: 14,
 		paddingBottom: 8,

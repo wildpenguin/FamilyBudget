@@ -1,6 +1,7 @@
 import type { GetTransactionType } from "@ourbudget/shared";
 import { StyleSheet, View } from "react-native";
-import { Icon, IconButton, Text, useTheme } from "react-native-paper";
+import { Icon, IconButton, Text } from "react-native-paper";
+import { useAppTheme } from "../../theme";
 import { centsToDollars } from "../../utils/money";
 
 type IncomeListItemProps = {
@@ -19,17 +20,14 @@ export function IncomeListItem({
 	onDelete,
 	isDeleting,
 }: IncomeListItemProps) {
-	const theme = useTheme();
+	const theme = useAppTheme();
 
 	return (
 		<View style={styles.row}>
 			<View
-				style={[
-					styles.iconCircle,
-					{ backgroundColor: theme.colors.errorContainer },
-				]}
+				style={[styles.iconCircle, { backgroundColor: theme.colors.income }]}
 			>
-				<Icon source="arrow-up" size={16} color={theme.colors.error} />
+				<Icon source="arrow-up" size={16} color={theme.colors.tertiary} />
 			</View>
 
 			<View style={styles.textContainer}>
@@ -49,9 +47,9 @@ export function IncomeListItem({
 
 			<Text
 				style={{
-					fontSize: 14,
-					fontWeight: "600",
-					color: theme.colors.error,
+					fontSize: 15,
+					fontWeight: "400",
+					color: theme.colors.primary,
 					marginRight: 4,
 				}}
 			>

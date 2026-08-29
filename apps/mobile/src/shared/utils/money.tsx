@@ -1,4 +1,7 @@
-export function centsToDollars(cents: number): number {
+export function centsToDollars(cents?: number): number {
+	if (!cents) {
+		return 0;
+	}
 	return cents / 100;
 }
 

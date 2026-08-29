@@ -78,7 +78,7 @@ export const transactionsRepository = {
 		filter?: { from?: string; to?: string; type?: "expense" | "income" },
 	) {
 		const conditions = [eq(transactions.familyId, familyId)];
-		console.log("filter=", filter);
+
 		if (transactionId) {
 			conditions.push(eq(transactions.id, transactionId));
 		}
@@ -134,5 +134,39 @@ export const transactionsRepository = {
 			totalNetCents: incomeSummary - expensesSummary,
 			byCategory: summary,
 		};
+	},
+	async getMonthlyChartData(familyId: number, from: string, to: string) {
+		const data = await db
+			.select({
+				month: sql<string>`
+				TO_CHAR(
+					date_trunc('month', ${transactions.date}),
+					'FMMon'
+				)`,
+				income: sql<string>`
+					COALESCE(
+						SUM(${transactions.amountCents})
+						FILTER (WHERE ${transactions.type} = 'income'),
+						0
+					)`,
+				expenses: sql<string>`
+					COALESCE(
+						SUM(${transactions.amountCents}) 
+						FILTER (WHERE ${transactions.type} = 'expense'),
+						0
+				)`,
+			})
+			.from(transactions)
+			.where(
+				and(
+					eq(transactions.familyId, familyId),
+					gte(transactions.date, from),
+					lte(transactions.date, to),
+				),
+			)
+			.groupBy(sql`date_trunc('month', ${transactions.date})`)
+			.orderBy(sql`date_trunc('month', ${transactions.date})`);
+
+		return data;
 	},
 };

@@ -1,3 +1,4 @@
+import { apiFetch } from "../../utils/apiConfig";
 import type {
 	BalanceSummary,
 	CategoryBreakdown,
@@ -21,12 +22,8 @@ function delay<T>(value: T, ms: number = MOCK_DELAY_MS): Promise<T> {
 // needs to change.
 
 export async function fetchBalanceSummary(): Promise<BalanceSummary> {
-	// return (await fetch(`${API_URL}/dashboard/balance`)).json();
-	return delay({
-		currentBalance: 4286.5,
-		currency: "USD",
-		percentChangeVsLastMonth: 4.2,
-	});
+	const overview = await apiFetch("/budgets/overview", { method: "GET" });
+	return overview.data;
 }
 
 export async function fetchPeriodSummary(): Promise<PeriodSummary> {
@@ -38,15 +35,11 @@ export async function fetchPeriodSummary(): Promise<PeriodSummary> {
 }
 
 export async function fetchMonthlyChartData(): Promise<MonthlyChartPoint[]> {
-	// return (await fetch(`${API_URL}/dashboard/chart?months=6`)).json();
-	return delay([
-		{ month: "Mar", income: 3200, expenses: 2400 },
-		{ month: "Apr", income: 3100, expenses: 2800 },
-		{ month: "May", income: 3400, expenses: 2300 },
-		{ month: "Jun", income: 3300, expenses: 3100 },
-		{ month: "Jul", income: 3600, expenses: 2600 },
-		{ month: "Aug", income: 3540, expenses: 2510 },
-	]);
+	const monthlyData = await apiFetch(`/budgets/monthly?months=6`, {
+		method: "GET",
+	});
+
+	return monthlyData.data;
 }
 
 export async function fetchTopCategories(): Promise<CategoryBreakdown[]> {
