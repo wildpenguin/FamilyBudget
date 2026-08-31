@@ -7,7 +7,7 @@ export default function AddStackLayout() {
 			screenOptions={{
 				presentation: "modal",
 				headerLeft: () => (
-					<IconButton icon="close" onPress={() => router.back()} />
+					<IconButton icon="close" onPress={() => router.replace("/(tabs)")} />
 				),
 			}}
 		>

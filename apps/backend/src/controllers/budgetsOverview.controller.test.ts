@@ -109,7 +109,7 @@ describe("GET /api/budgets/monthly", () => {
 		expect(res.status).toBe(200);
 		expect(res.body.meta.total).toBe(4);
 		expect(res.body.data).toHaveLength(4);
-		console.log("monthly=", res.body.data);
+
 		for (const point of res.body.data) {
 			expect(point.income).toBe("50000");
 			expect(point.expense).toBe("10000");

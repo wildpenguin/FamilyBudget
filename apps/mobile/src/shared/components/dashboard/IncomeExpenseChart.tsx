@@ -12,7 +12,7 @@ const CHART_HEIGHT = 60;
 
 export function IncomeExpenseChart({ data }: IncomeExpenseChartProps) {
 	const theme = useAppTheme();
-	console.log("data=", data);
+
 	if (!data || data.length === 0) {
 		return null;
 	}

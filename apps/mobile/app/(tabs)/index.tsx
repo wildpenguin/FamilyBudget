@@ -70,7 +70,7 @@ export default function Home() {
 			</View>
 
 			<View style={styles.section}>
-				<TopCategoriesCard data={categoriesQuery.data} />
+				<TopCategoriesCard data={balanceQuery.data?.byCategory} />
 			</View>
 
 			<View style={styles.section}>

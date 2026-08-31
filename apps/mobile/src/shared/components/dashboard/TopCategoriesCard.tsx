@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import { Icon, ProgressBar, Text, useTheme } from "react-native-paper";
-
+import { centsToDollars, dollarsToCents } from "../../utils/money";
 import type { CategoryBreakdown } from "./dashboard";
 
 type TopCategoriesCardProps = {
@@ -28,14 +28,14 @@ export function TopCategoriesCard({ data }: TopCategoriesCardProps) {
 			</Text>
 			<View style={{ gap: 10 }}>
 				{data.map((category) => (
-					<View key={category.id} style={styles.row}>
+					<View key={category.categoryId} style={styles.row}>
 						<Icon
-							source={category.icon}
+							source="arrow-down"
 							size={15}
 							color={theme.colors.onSurfaceVariant}
 						/>
 						<Text style={[styles.name, { color: theme.colors.onSurface }]}>
-							{category.name}
+							{category.categoryName}
 						</Text>
 						<ProgressBar
 							progress={category.percentOfMax}
@@ -45,7 +45,7 @@ export function TopCategoriesCard({ data }: TopCategoriesCardProps) {
 						<Text
 							style={[styles.amount, { color: theme.colors.onSurfaceVariant }]}
 						>
-							${category.amount.toLocaleString()}
+							${centsToDollars(category.totalAmountCents)}
 						</Text>
 					</View>
 				))}
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		gap: 10,
+		width: "60%",
 	},
 	name: {
 		fontSize: 12,
@@ -68,6 +69,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		height: 6,
 		borderRadius: 4,
+		minWidth: 0,
+		overflow: "hidden",
 	},
 	amount: {
 		fontSize: 12,

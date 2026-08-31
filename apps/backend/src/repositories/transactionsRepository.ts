@@ -128,11 +128,16 @@ export const transactionsRepository = {
 			.filter((r) => r.type === "income")
 			.reduce((s, r) => s + Number(r.totalAmountCents), 0);
 
+		const topExpenses = summary
+			.filter((r) => r.type === "expense")
+			.sort((a, b) => Number(b.totalAmountCents) - Number(a.totalAmountCents))
+			.slice(0, 5);
+
 		return {
 			totalIncomeCents: incomeSummary,
 			totalExpensesCents: expensesSummary,
 			totalNetCents: incomeSummary - expensesSummary,
-			byCategory: summary,
+			byCategory: topExpenses,
 		};
 	},
 	async getMonthlyChartData(familyId: number, from: string, to: string) {
