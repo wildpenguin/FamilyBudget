@@ -24,14 +24,14 @@ function delay<T>(value: T, ms: number = MOCK_DELAY_MS): Promise<T> {
 export async function fetchBalanceSummary(): Promise<BalanceSummary> {
 	const overview = await apiFetch("/budgets/overview", { method: "GET" });
 	const max = Math.max(
-		...overview.data.byCategory.map((category: any) =>
+		...overview.data.byCategory.map((category: CategoryBreakdown) =>
 			Number(category.totalAmountCents),
 		),
 	);
 
 	const result = {
 		...overview.data,
-		byCategory: overview.data.byCategory.map((category: any) => ({
+		byCategory: overview.data.byCategory.map((category: CategoryBreakdown) => ({
 			...category,
 			percentOfMax: Number(category.totalAmountCents) / max,
 		})),

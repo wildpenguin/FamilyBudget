@@ -1,6 +1,7 @@
 import { StyleSheet, View } from "react-native";
-import { Icon, ProgressBar, Text, useTheme } from "react-native-paper";
-import { centsToDollars, dollarsToCents } from "../../utils/money";
+import { Icon, ProgressBar, Text } from "react-native-paper";
+import { useAppTheme } from "../../theme";
+import { centsToDollars } from "../../utils/money";
 import type { CategoryBreakdown } from "./dashboard";
 
 type TopCategoriesCardProps = {
@@ -8,7 +9,7 @@ type TopCategoriesCardProps = {
 };
 
 export function TopCategoriesCard({ data }: TopCategoriesCardProps) {
-	const theme = useTheme();
+	const theme = useAppTheme();
 
 	if (!data || data.length === 0) {
 		return null;
@@ -28,25 +29,33 @@ export function TopCategoriesCard({ data }: TopCategoriesCardProps) {
 			</Text>
 			<View style={{ gap: 10 }}>
 				{data.map((category) => (
-					<View key={category.categoryId} style={styles.row}>
-						<Icon
-							source="arrow-down"
-							size={15}
-							color={theme.colors.onSurfaceVariant}
-						/>
-						<Text style={[styles.name, { color: theme.colors.onSurface }]}>
-							{category.categoryName}
-						</Text>
-						<ProgressBar
-							progress={category.percentOfMax}
-							color={theme.colors.primary}
-							style={styles.progressBar}
-						/>
-						<Text
-							style={[styles.amount, { color: theme.colors.onSurfaceVariant }]}
+					<View style={styles.category} key={category.categoryId}>
+						<View
+							style={[
+								styles.iconContainer,
+								{ backgroundColor: theme.colors.expense },
+							]}
 						>
-							${centsToDollars(category.totalAmountCents)}
-						</Text>
+							<Icon source="arrow-down" size={15} color={theme.colors.error} />
+						</View>
+
+						<View style={styles.middle}>
+							<View style={styles.nameRow}>
+								<Text variant="bodySmall" numberOfLines={1} style={styles.name}>
+									{category.categoryName}
+								</Text>
+
+								<Text variant="bodySmall">
+									${centsToDollars(category.totalAmountCents)}
+								</Text>
+							</View>
+
+							<ProgressBar
+								progress={category.percentOfMax}
+								style={styles.progress}
+								theme={{ colors: { primary: "#8b4061" } }}
+							/>
+						</View>
 					</View>
 				))}
 			</View>
@@ -55,26 +64,52 @@ export function TopCategoriesCard({ data }: TopCategoriesCardProps) {
 }
 
 const styles = StyleSheet.create({
-	row: {
+	container: {
+		padding: 8,
+	},
+
+	title: {
+		marginBottom: 6,
+	},
+
+	category: {
 		flexDirection: "row",
 		alignItems: "center",
-		gap: 10,
-		width: "60%",
+		marginBottom: 8,
 	},
-	name: {
-		fontSize: 12,
-		width: 70,
+
+	iconContainer: {
+		width: 34,
+		height: 34,
+		borderRadius: 10,
+		alignItems: "center",
+		justifyContent: "center",
+		marginRight: 12,
 	},
-	progressBar: {
+
+	middle: {
 		flex: 1,
-		height: 6,
-		borderRadius: 4,
 		minWidth: 0,
-		overflow: "hidden",
 	},
-	amount: {
-		fontSize: 12,
-		width: 48,
-		textAlign: "right",
+
+	nameRow: {
+		flexDirection: "row",
+		alignItems: "center",
+		marginBottom: 6,
+	},
+
+	name: {
+		flex: 1,
+		marginRight: 8,
+	},
+
+	progress: {
+		height: 6,
+		borderRadius: 3,
+	},
+
+	limit: {
+		marginTop: 4,
+		opacity: 0.6,
 	},
 });

@@ -17,10 +17,10 @@ export type MonthlyChartPoint = {
 };
 
 export type CategoryBreakdown = {
-	id: string;
-	name: string;
+	categoryId: number;
+	categoryName: string;
 	icon: string; // MaterialCommunityIcons name
-	amount: number;
+	totalAmountCents: number;
 	percentOfMax: number; // 0–1, relative to the largest category, used for the bar width
 };
 
