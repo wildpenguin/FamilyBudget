@@ -1,10 +1,12 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../db";
 import { schedules } from "../db/schema/schedules";
+import { categoryRepository } from "./categoryRepository";
+import { categories } from "../db/schema/categories";
 
 type ScheduleInput = Omit<
 	typeof schedules.$inferInsert,
-	"id" | "createdAt" | "createdByUserId"
+	"id" | "createdAt" | "createdByUserId" | "familyId"
 >;
 type UpdateScheduleInput = Partial<
 	Omit<
@@ -14,11 +16,17 @@ type UpdateScheduleInput = Partial<
 >;
 
 export const schedulesRepository = {
-	async create(schedule: ScheduleInput, userId: number) {
+	async create(schedule: ScheduleInput, userId: number, familyId: number) {
+		const category = await categoryRepository.findById(schedule.categoryId);
+		if (!category) {
+			throw new Error('Category not found');
+		}
 		const [saved] = await db
 			.insert(schedules)
 			.values({
 				...schedule,
+				categoryId: category.id,
+				familyId,
 				createdByUserId: userId,
 			})
 			.returning();
@@ -59,7 +67,8 @@ export const schedulesRepository = {
 		const results = await db
 			.select()
 			.from(schedules)
-			.where(and(...conditions));
+			.where(and(...conditions))
+			.leftJoin(categories, eq(schedules.categoryId, categories.id));
 
 		return results;
 	},

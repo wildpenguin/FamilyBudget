@@ -20,12 +20,13 @@ export const schedulesController = {
 			return res.status(400).json({ error: z.treeifyError(parsedBody.error) });
 		}
 		const member = await familyMembersRepository.findByUser(req.userId);
-		if (member?.familyId !== parsedBody.data.familyId) {
-			return res.status(403).json({ error: "Group mismatch for this user" });
+		if (!member?.familyId) {
+			return res.status(403).json({ error: "Missing family from the user" });
 		}
 		const schedule = await schedulesRepository.create(
 			parsedBody.data,
 			req.userId,
+			member.familyId
 		);
 		return res.json({ data: schedule });
 	},

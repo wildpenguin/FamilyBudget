@@ -1,11 +1,12 @@
-import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Card, IconButton, Text } from "react-native-paper";
-import type { Frequency, ScheduledTransaction } from "../types";
+import { ActivityIndicator, Card, IconButton, Text, Icon } from "react-native-paper";
+import type { Frequency, ScheduledTransaction } from "./types";
 import {
 	useDeleteScheduledTransaction,
 	useScheduledTransactions,
 } from "./scheduledTransactions";
+import { centsToDollars } from "../../utils/money";
+import { useAppTheme } from "../../theme";
 
 function frequencyLabel(
 	frequency: Frequency,
@@ -23,23 +24,37 @@ interface RowProps {
 }
 
 function ScheduleRow({ item, onDelete, deleting }: RowProps) {
+	const { schedules, categories } = item;
+    const theme = useAppTheme();
+
 	return (
 		<Card style={styles.scheduleCard} mode="outlined">
 			<View style={styles.scheduleRow}>
+                
+                <View style={[styles.iconCircle, { 
+                    backgroundColor: (categories.type === 'income') ? theme.colors.income : theme.colors.expense }]} >
+				    <Icon
+                        source={categories.type === 'income' ? 'arrow-up' : 'arrow-down'}
+                        size={16}
+                        color={categories.type === 'income' ? theme.colors.tertiary : theme.colors.error}
+                    />
+			    </View>
 				<View style={styles.scheduleInfo}>
 					<Text style={styles.scheduleDescription} numberOfLines={1}>
-						{item.description}
+						{schedules.description}
 					</Text>
 					<Text style={styles.scheduleMeta} numberOfLines={1}>
-						{item.categoryName} ·{" "}
-						{frequencyLabel(item.frequency, item.dayOfMonth)}
+						{categories.name} ·{" "}
+						{frequencyLabel(schedules.frequency, schedules.dayOfMonth)}
 					</Text>
 				</View>
-				<Text style={styles.scheduleAmount}>${item.amount.toFixed(0)}</Text>
+				<Text style={styles.scheduleAmount}>
+					${centsToDollars(schedules.amountCents)}
+				</Text>
 				<IconButton
 					icon="trash-can-outline"
 					size={18}
-					onPress={() => onDelete(item.id)}
+					onPress={() => onDelete(schedules.id)}
 					disabled={deleting}
 				/>
 			</View>
@@ -49,7 +64,7 @@ function ScheduleRow({ item, onDelete, deleting }: RowProps) {
 
 export default function ScheduledTransactionList() {
 	const {
-		data: schedules = [],
+		data = [],
 		isLoading,
 		isError,
 	} = useScheduledTransactions();
@@ -73,7 +88,7 @@ export default function ScheduledTransactionList() {
 		);
 	}
 
-	if (schedules.length === 0) {
+	if (data.length === 0) {
 		return (
 			<View style={styles.centered}>
 				<Text style={styles.emptyText}>No scheduled transactions yet</Text>
@@ -83,9 +98,9 @@ export default function ScheduledTransactionList() {
 
 	return (
 		<View style={styles.listContent}>
-			{schedules.map((item) => (
+			{data.map((item) => (
 				<ScheduleRow
-					key={item.id}
+					key={item.schedules.id}
 					item={item}
 					onDelete={(id) => deleteMutation.mutate(id)}
 					deleting={deleteMutation.isPending}
@@ -134,5 +149,12 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		color: "#888",
 		fontSize: 13,
+	},
+    iconCircle: {
+		width: 34,
+		height: 34,
+		borderRadius: 10,
+		alignItems: "center",
+		justifyContent: "center",
 	},
 });

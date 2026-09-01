@@ -1,17 +1,27 @@
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import { ScrollView, StyleSheet } from "react-native";
+import TransactionFilters from "../../src/shared/components/transactions/TransactionFilters";
+import TransactionList from "../../src/shared/components/transactions/TransactionList";
+import { TransactionFilters as Filters, defaultTransactionFilters } from "../../src/shared/components/transactions/types";
 
-export default function ExpensesTab() {
-	return (
-		<View style={styles.container}>
-			<Text> </Text>
-		</View>
-	);
+export default function TransactionsScreen() {
+  const [filters, setFilters] = useState<Filters>(defaultTransactionFilters);
+
+  return (
+    <ScrollView
+      contentContainerStyle={styles.content}
+      keyboardShouldPersistTaps="handled"
+    >
+      <TransactionFilters value={filters} onChange={setFilters} />
+      <TransactionList filters={filters} />
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: "center",
-		justifyContent: "center",
-	},
+  content: {
+    padding: 12,
+    paddingBottom: 32,
+    gap: 12,
+  },
 });

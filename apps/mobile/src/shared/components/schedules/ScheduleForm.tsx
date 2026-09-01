@@ -8,11 +8,13 @@ import {
 	Text,
 	TextInput,
 } from "react-native-paper";
-import type { Frequency } from "../types";
+import type { Frequency } from "./types";
 import {
 	useCategories,
 	useCreateScheduledTransaction,
 } from "./scheduledTransactions";
+import { dollarsToCents } from "../../utils/money";
+import { DatePickerInput } from "react-native-paper-dates";
 
 const FREQUENCIES: { value: Frequency; label: string }[] = [
 	{ value: "weekly", label: "Weekly" },
@@ -25,8 +27,8 @@ interface FormState {
 	description: string;
 	amount: string;
 	frequency: Frequency;
-	startDate: string;
-	endDate: string;
+	startDate: Date;
+	endDate: Date | undefined;
 	dayOfMonth: string;
 }
 
@@ -35,8 +37,8 @@ const emptyForm: FormState = {
 	description: "",
 	amount: "",
 	frequency: "monthly",
-	startDate: "",
-	endDate: "",
+	startDate: new Date(),
+	endDate: undefined,
 	dayOfMonth: "",
 };
 
@@ -63,7 +65,6 @@ export default function ScheduledTransactionForm() {
 		if (!form.description.trim()) e.description = "Required";
 		if (!form.amount || isNaN(Number(form.amount)) || Number(form.amount) <= 0)
 			e.amount = "Enter a valid amount";
-		if (!form.startDate.trim()) e.startDate = "Required (YYYY-MM-DD)";
 		if (
 			form.frequency === "monthly" &&
 			(!form.dayOfMonth ||
@@ -82,14 +83,13 @@ export default function ScheduledTransactionForm() {
 		createMutation.mutate(
 			{
 				categoryId: form.categoryId,
-				categoryName: selectedCategory.name,
 				description: form.description.trim(),
-				amount: Number(form.amount),
+				amountCents: dollarsToCents(Number(form.amount)),
 				frequency: form.frequency,
 				startDate: form.startDate,
-				endDate: form.endDate.trim() ? form.endDate.trim() : null,
-				dayOfMonth:
-					form.frequency === "monthly" ? Number(form.dayOfMonth) : null,
+				endDate: form.endDate ?? undefined,
+                dayOfWeek: form.frequency === "monthly" ? Number(1) : null, // for now Monday only
+				dayOfMonth:	form.frequency === "monthly" ? Number(form.dayOfMonth) : null,
 			},
 			{ onSuccess: () => setForm(emptyForm) },
 		);
@@ -190,28 +190,26 @@ export default function ScheduledTransactionForm() {
 
 				<View style={styles.inlineRow}>
 					<View style={styles.inlineField}>
-						<TextInput
-							mode="outlined"
-							label="Start date (YYYY-MM-DD)"
-							value={form.startDate}
-							onChangeText={(v) => updateField("startDate", v)}
-							style={styles.input}
-							dense
-							error={!!errors.startDate}
-						/>
+                        <DatePickerInput
+                            locale="en"
+                            label="Start date"
+                            value={form.startDate}
+                            onChange={(d) => updateField("startDate", d)}
+                            inputMode="start"
+                        />
+
 						{!!errors.startDate && (
 							<Text style={styles.errorText}>{errors.startDate}</Text>
 						)}
 					</View>
 					<View style={styles.inlineField}>
-						<TextInput
-							mode="outlined"
-							label="End date (optional)"
-							value={form.endDate}
-							onChangeText={(v) => updateField("endDate", v)}
-							style={styles.input}
-							dense
-						/>
+                         <DatePickerInput
+                            locale="en"
+                            label="Start date"
+                            value={form.endDate}
+                            onChange={(d) => updateField("endDate", d)}
+                            inputMode="start"
+                        />
 					</View>
 				</View>
 
@@ -234,7 +232,7 @@ const styles = StyleSheet.create({
 		width: "100%",
 	},
 	formContent: {
-		gap: 8,
+		gap: 5,
 	},
 	fullWidthButton: {
 		width: "100%",
@@ -244,6 +242,7 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		width: "100%",
+        borderRadius: 10,
 	},
 	inlineRow: {
 		flexDirection: "row",

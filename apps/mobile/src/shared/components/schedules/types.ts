@@ -6,15 +6,23 @@ export interface Category {
 }
 
 export interface ScheduledTransaction {
-	id: string;
-	categoryId: string;
-	categoryName: string;
-	description: string;
-	amount: number;
-	frequency: Frequency;
-	startDate: string; // YYYY-MM-DD
-	endDate: string | null; // YYYY-MM-DD or null
-	dayOfMonth: number | null; // only relevant when frequency === "monthly"
+	schedules: {
+		id: string;
+		categoryId: string;
+		description: string;
+		amountCents: number;
+		frequency: Frequency;
+		startDate: Date;
+		endDate: Date | undefined;
+		dayOfMonth: number | null; // only relevant when frequency === "monthly"
+		dayOfWeek: number | null;
+	},
+	categories: {
+		familyId: number;
+		id: number;
+		name: string;
+		type: "expense" | "income";
+	}
 }
 
 // Shape sent when creating a new schedule (id is assigned by the "server")

@@ -1,5 +1,5 @@
 import type { CreateCategory } from "@ourbudget/shared";
-import { and, asc, desc, eq, inArray } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, Query } from "drizzle-orm";
 import { db } from "../db";
 import { categories } from "../db/schema/categories";
 import { familyMembers } from "../db/schema/familyMembers";
@@ -11,6 +11,13 @@ type ListFilters = {
 };
 
 export const categoryRepository = {
+	async findById(id: number) {
+		const [ query ] = await db.select()
+			.from(categories)
+			.where(eq(categories.id, id))
+		;
+		return query ?? null;
+	},
 	async list(filters: ListFilters, userId?: number) {
 		if (!userId) {
 			return null;
