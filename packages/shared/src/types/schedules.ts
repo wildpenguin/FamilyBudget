@@ -17,11 +17,9 @@ export const ScheduleInput = z.object({
 
 export type ScheduleType = z.infer<typeof ScheduleInput>;
 
-export const UpdateScheduleInput = ScheduleInput
-	.partial()
-	.refine(
-		(data) => Object.keys(data).length > 0,
-		"At least one field must be provided",
-	);
+export const UpdateScheduleInput = ScheduleInput.partial().refine(
+	(data) => Object.keys(data).length > 0,
+	"At least one field must be provided",
+);
 
 export type UpdateScheduleType = z.infer<typeof UpdateScheduleInput>;

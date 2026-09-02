@@ -6,10 +6,12 @@ export default function TabsLayout() {
 	const { openAddSheet } = useAddSheet();
 
 	return (
-		<Tabs screenOptions={{ 
-			tabBarActiveTintColor: "#101010",
-			tabBarStyle: { backgroundColor: "#d4ddf7"},
-		}}>
+		<Tabs
+			screenOptions={{
+				tabBarActiveTintColor: "#101010",
+				tabBarStyle: { backgroundColor: "#d4ddf7" },
+			}}
+		>
 			<Tabs.Screen
 				name="index"
 				options={{
@@ -48,7 +50,11 @@ export default function TabsLayout() {
 				options={{
 					title: "Schedules",
 					tabBarIcon: ({ color, size }) => (
-						<Icon source="calendar-refresh" color={color as string} size={size} />
+						<Icon
+							source="calendar-refresh"
+							color={color as string}
+							size={size}
+						/>
 					),
 				}}
 			/>

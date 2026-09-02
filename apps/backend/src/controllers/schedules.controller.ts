@@ -26,7 +26,7 @@ export const schedulesController = {
 		const schedule = await schedulesRepository.create(
 			parsedBody.data,
 			req.userId,
-			member.familyId
+			member.familyId,
 		);
 		return res.json({ data: schedule });
 	},

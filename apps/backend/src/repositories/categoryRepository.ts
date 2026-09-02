@@ -12,10 +12,10 @@ type ListFilters = {
 
 export const categoryRepository = {
 	async findById(id: number) {
-		const [ query ] = await db.select()
+		const [query] = await db
+			.select()
 			.from(categories)
-			.where(eq(categories.id, id))
-		;
+			.where(eq(categories.id, id));
 		return query ?? null;
 	},
 	async list(filters: ListFilters, userId?: number) {

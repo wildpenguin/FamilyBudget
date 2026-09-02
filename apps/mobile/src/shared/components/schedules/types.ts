@@ -16,13 +16,13 @@ export interface ScheduledTransaction {
 		endDate: Date | undefined;
 		dayOfMonth: number | null; // only relevant when frequency === "monthly"
 		dayOfWeek: number | null;
-	},
+	};
 	categories: {
 		familyId: number;
 		id: number;
 		name: string;
 		type: "expense" | "income";
-	}
+	};
 }
 
 // Shape sent when creating a new schedule (id is assigned by the "server")

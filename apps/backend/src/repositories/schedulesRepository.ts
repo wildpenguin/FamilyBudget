@@ -1,8 +1,8 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../db";
+import { categories } from "../db/schema/categories";
 import { schedules } from "../db/schema/schedules";
 import { categoryRepository } from "./categoryRepository";
-import { categories } from "../db/schema/categories";
 
 type ScheduleInput = Omit<
 	typeof schedules.$inferInsert,
@@ -19,7 +19,7 @@ export const schedulesRepository = {
 	async create(schedule: ScheduleInput, userId: number, familyId: number) {
 		const category = await categoryRepository.findById(schedule.categoryId);
 		if (!category) {
-			throw new Error('Category not found');
+			throw new Error("Category not found");
 		}
 		const [saved] = await db
 			.insert(schedules)

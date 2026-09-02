@@ -1,35 +1,37 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { apiFetch } from "../../utils/apiConfig";
 import type {
 	Category,
 	NewScheduledTransaction,
 	ScheduledTransaction,
 } from "./types";
-import { apiFetch } from "../../utils/apiConfig";
 
 async function fetchSchedules(): Promise<ScheduledTransaction[]> {
-	const result = await apiFetch('/schedules', { method: 'GET' });
+	const result = await apiFetch("/schedules", { method: "GET" });
 
-    return result?.data;
+	return result?.data;
 }
 
 async function fetchCategories(): Promise<Category[]> {
-	const result = await apiFetch('/categories', {method: 'GET'});
+	const result = await apiFetch("/categories", { method: "GET" });
 
-    return result?.data;
+	return result?.data;
 }
 
-async function createSchedule(payload: NewScheduledTransaction): Promise<ScheduledTransaction> {
-	const result = await apiFetch('/schedules', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-    })
+async function createSchedule(
+	payload: NewScheduledTransaction,
+): Promise<ScheduledTransaction> {
+	const result = await apiFetch("/schedules", {
+		method: "POST",
+		body: JSON.stringify(payload),
+	});
 	return result;
 }
 
 async function deleteSchedule(id: string): Promise<{ id: string }> {
-	const response = await apiFetch(`schedules/${id}`, { method: 'DELETE'});
+	const response = await apiFetch(`schedules/${id}`, { method: "DELETE" });
 
-    return response;
+	return response;
 }
 
 // ---------------------------------------------------------------------------

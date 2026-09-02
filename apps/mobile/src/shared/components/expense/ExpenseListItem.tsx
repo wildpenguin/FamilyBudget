@@ -1,3 +1,4 @@
+import { format, parse } from "date-fns";
 import { StyleSheet, View } from "react-native";
 import { Icon, IconButton, Text } from "react-native-paper";
 import { useAppTheme } from "../../theme";
@@ -8,11 +9,6 @@ type ExpenseListItemProps = {
 	onDelete: (id: string) => void;
 	isDeleting: boolean;
 };
-
-function formatDate(iso: string): string {
-	const date = new Date(iso);
-	return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-}
 
 export function ExpenseListItem({
 	expense,
@@ -40,7 +36,7 @@ export function ExpenseListItem({
 						marginTop: 1,
 					}}
 				>
-					{expense.categoryId} · {formatDate(expense.date)}
+					{expense.categoryId} · {format(expense.date, "d LLL")}
 				</Text>
 			</View>
 

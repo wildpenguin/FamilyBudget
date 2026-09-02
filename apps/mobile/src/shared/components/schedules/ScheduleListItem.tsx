@@ -1,12 +1,18 @@
 import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Card, IconButton, Text, Icon } from "react-native-paper";
-import type { Frequency, ScheduledTransaction } from "./types";
+import {
+	ActivityIndicator,
+	Card,
+	Icon,
+	IconButton,
+	Text,
+} from "react-native-paper";
+import { useAppTheme } from "../../theme";
+import { centsToDollars } from "../../utils/money";
 import {
 	useDeleteScheduledTransaction,
 	useScheduledTransactions,
 } from "./scheduledTransactions";
-import { centsToDollars } from "../../utils/money";
-import { useAppTheme } from "../../theme";
+import type { Frequency, ScheduledTransaction } from "./types";
 
 function frequencyLabel(
 	frequency: Frequency,
@@ -25,20 +31,32 @@ interface RowProps {
 
 function ScheduleRow({ item, onDelete, deleting }: RowProps) {
 	const { schedules, categories } = item;
-    const theme = useAppTheme();
+	const theme = useAppTheme();
 
 	return (
 		<Card style={styles.scheduleCard} mode="outlined">
 			<View style={styles.scheduleRow}>
-                
-                <View style={[styles.iconCircle, { 
-                    backgroundColor: (categories.type === 'income') ? theme.colors.income : theme.colors.expense }]} >
-				    <Icon
-                        source={categories.type === 'income' ? 'arrow-up' : 'arrow-down'}
-                        size={16}
-                        color={categories.type === 'income' ? theme.colors.tertiary : theme.colors.error}
-                    />
-			    </View>
+				<View
+					style={[
+						styles.iconCircle,
+						{
+							backgroundColor:
+								categories.type === "income"
+									? theme.colors.income
+									: theme.colors.expense,
+						},
+					]}
+				>
+					<Icon
+						source={categories.type === "income" ? "arrow-up" : "arrow-down"}
+						size={16}
+						color={
+							categories.type === "income"
+								? theme.colors.tertiary
+								: theme.colors.error
+						}
+					/>
+				</View>
 				<View style={styles.scheduleInfo}>
 					<Text style={styles.scheduleDescription} numberOfLines={1}>
 						{schedules.description}
@@ -63,11 +81,7 @@ function ScheduleRow({ item, onDelete, deleting }: RowProps) {
 }
 
 export default function ScheduledTransactionList() {
-	const {
-		data = [],
-		isLoading,
-		isError,
-	} = useScheduledTransactions();
+	const { data = [], isLoading, isError } = useScheduledTransactions();
 	const deleteMutation = useDeleteScheduledTransaction();
 
 	if (isLoading) {
@@ -150,7 +164,7 @@ const styles = StyleSheet.create({
 		color: "#888",
 		fontSize: 13,
 	},
-    iconCircle: {
+	iconCircle: {
 		width: 34,
 		height: 34,
 		borderRadius: 10,

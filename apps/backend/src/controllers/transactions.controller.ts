@@ -20,6 +20,7 @@ const transactionDateQuery = z.object({
 			type: z.enum(["expense", "income"]).optional(),
 		})
 		.optional(),
+	sort: z.enum(["asc", "desc"]).optional(),
 });
 
 export const transactionsController = {
@@ -50,6 +51,7 @@ export const transactionsController = {
 			familyMember.familyId,
 			undefined,
 			filterQuery.data.filter,
+			filterQuery.data.sort,
 		);
 		return res.json({
 			data: transactions,

@@ -24,7 +24,9 @@ export function IncomeListItem({
 
 	return (
 		<View style={styles.row}>
-			<View style={[styles.iconCircle, { backgroundColor: theme.colors.income }]} >
+			<View
+				style={[styles.iconCircle, { backgroundColor: theme.colors.income }]}
+			>
 				<Icon source="arrow-up" size={16} color={theme.colors.tertiary} />
 			</View>
 
