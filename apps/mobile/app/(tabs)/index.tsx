@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { Avatar, Text } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BalanceCard } from "../../src/shared/components/dashboard/BalanceCard";
@@ -10,14 +10,13 @@ import { UpcomingScheduleBanner } from "../../src/shared/components/dashboard/Up
 import {
 	useBalanceSummary,
 	useMonthlyChartData,
-	usePeriodSummary,
 	useRecentTransactions,
-	useTopCategories,
 	useUpcomingSchedule,
 } from "../../src/shared/components/dashboard/useDashboardQueries";
 
 import { useAuth } from "../../src/shared/context/AuthContext";
 import { useAppTheme } from "../../src/shared/theme";
+import { router } from "expo-router";
 
 export default function Home() {
 	const theme = useAppTheme();
@@ -25,9 +24,7 @@ export default function Home() {
 	const { user } = useAuth();
 
 	const balanceQuery = useBalanceSummary();
-	const periodSummaryQuery = usePeriodSummary();
 	const chartQuery = useMonthlyChartData();
-	const categoriesQuery = useTopCategories();
 	const scheduleQuery = useUpcomingSchedule();
 	const transactionsQuery = useRecentTransactions();
 
@@ -51,7 +48,9 @@ export default function Home() {
 						{user?.name}
 					</Text>
 				</View>
-				<Avatar.Icon size={38} icon="account" />
+				<Pressable onPress={() => router.push("/(tabs)/profile")}>
+					<Avatar.Icon size={38} icon="account-outline" />
+				</Pressable>
 			</View>
 
 			<View style={styles.section}>

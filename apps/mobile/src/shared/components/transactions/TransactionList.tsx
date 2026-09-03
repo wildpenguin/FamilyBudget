@@ -116,7 +116,8 @@ export default function TransactionList({ filters, onEditTransaction }: Props) {
 
 const styles = StyleSheet.create({
 	list: {
-		gap: 8,
+		marginTop: 10,
+		gap: 4,
 	},
 	centered: {
 		paddingVertical: 24,

@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import { Icon, type MD3Theme, Text } from "react-native-paper";
 import { useAppTheme } from "../../theme";
-import { centsToDollars, formatCentsAsCurrency } from "../../utils/money";
+import { formatCentsAsCurrency } from "../../utils/money";
 import type { BalanceSummary } from "./dashboard";
 
 type SummaryCardsProps = {
@@ -19,7 +19,9 @@ export function SummaryCards({ data }: SummaryCardsProps) {
 				icon="arrow-up"
 				tint={{
 					background: theme.colors.income,
-					foreground: theme.colors.tertiary,
+					foreground: "#016301",
+					boxBackground: theme.colors.income,
+		
 				}}
 				theme={theme}
 			/>
@@ -30,6 +32,7 @@ export function SummaryCards({ data }: SummaryCardsProps) {
 				tint={{
 					background: theme.colors.expense,
 					foreground: theme.colors.error,
+					boxBackground: theme.colors.expense
 				}}
 				theme={theme}
 			/>
@@ -41,7 +44,7 @@ type SummaryCardProps = {
 	label: string;
 	amount: number | undefined;
 	icon: string;
-	tint: { background: string; foreground: string };
+	tint: { background: string; foreground: string; boxBackground: string; };
 	theme: MD3Theme;
 };
 
@@ -50,13 +53,13 @@ function SummaryCard({ label, amount, icon, tint, theme }: SummaryCardProps) {
 
 	return (
 		<View
-			style={[styles.card, { backgroundColor: theme.colors.surfaceVariant }]}
+			style={[styles.card, { backgroundColor: tint.boxBackground }]}
 		>
 			<View style={styles.labelRow}>
 				<View style={[styles.iconCircle, { backgroundColor: tint.background }]}>
 					<Icon source={icon} size={13} color={tint.foreground} />
 				</View>
-				<Text style={{ fontSize: 12, color: theme.colors.onSurfaceVariant }}>
+				<Text style={{ fontSize: 13, color: tint.foreground }}>
 					{label}
 				</Text>
 			</View>

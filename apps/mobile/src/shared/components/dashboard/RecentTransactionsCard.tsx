@@ -1,15 +1,17 @@
 import { router } from "expo-router";
 import { Pressable, StyleSheet, View } from "react-native";
-import { Icon, Text, useTheme } from "react-native-paper";
+import { Icon, Text } from "react-native-paper";
+import { useAppTheme } from "../../theme";
 
-import type { Transaction } from "./dashboard";
+import { GetTransactionType } from "@ourbudget/shared";
+import { formatCentsAsCurrency } from "../../utils/money";
 
 type RecentTransactionsCardProps = {
-	data: Transaction[] | undefined;
+	data: GetTransactionType[] | undefined;
 };
 
 export function RecentTransactionsCard({ data }: RecentTransactionsCardProps) {
-	const theme = useTheme();
+	const theme = useAppTheme();
 
 	return (
 		<View>
@@ -31,20 +33,21 @@ export function RecentTransactionsCard({ data }: RecentTransactionsCardProps) {
 			</View>
 
 			<View>
-				{(data ?? []).map((transaction) => {
-					const isPositive = transaction.amount >= 0;
-					const tint = isPositive
+				{(data ?? []).map((item) => {
+					const { transactions, categories} = item;
+					const isIncome = transactions.type === 'income';
+					const tint = isIncome
 						? {
-								background: theme.colors.tertiaryContainer,
+								background: theme.colors.income,
 								foreground: theme.colors.tertiary,
 							}
 						: {
-								background: theme.colors.errorContainer,
+								background: theme.colors.expense,
 								foreground: theme.colors.error,
 							};
 
 					return (
-						<View key={transaction.id} style={styles.row}>
+						<View key={transactions.id} style={styles.row}>
 							<View
 								style={[
 									styles.iconCircle,
@@ -52,30 +55,30 @@ export function RecentTransactionsCard({ data }: RecentTransactionsCardProps) {
 								]}
 							>
 								<Icon
-									source={transaction.icon}
+									source= {isIncome ? 'arrow-up' : 'arrow-down'}
 									size={16}
 									color={tint.foreground}
 								/>
 							</View>
 							<View style={styles.textContainer}>
 								<Text style={{ fontSize: 13, color: theme.colors.onSurface }}>
-									{transaction.title}
+									{transactions.description}
 								</Text>
 								<Text
 									style={{ fontSize: 11, color: theme.colors.onSurfaceVariant }}
 								>
-									{transaction.date}
+									{transactions.date}
 								</Text>
 							</View>
 							<Text
-								style={{
+								style={[{
 									fontSize: 13,
-									fontWeight: "600",
+									fontWeight: "400",
 									color: tint.foreground,
-								}}
+								}, isIncome && styles.incomeAmount]}
 							>
-								{isPositive ? "+" : "-"}$
-								{Math.abs(transaction.amount).toFixed(2)}
+								{isIncome ? "+" : "-"}
+								{formatCentsAsCurrency(transactions.amountCents)}
 							</Text>
 						</View>
 					);
@@ -107,5 +110,8 @@ const styles = StyleSheet.create({
 	},
 	textContainer: {
 		flex: 1,
+	},
+	incomeAmount: {
+		color: "#0F6E56",
 	},
 });

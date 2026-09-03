@@ -2,47 +2,19 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Chip, TextInput } from "react-native-paper";
 import type { TransactionFilters as Filters } from "./types";
+import { DatePickerInput } from "react-native-paper-dates";
 
 interface Props {
 	value: Filters;
 	onChange: (next: Filters) => void;
 }
 
-function pad(n: number): string {
-	return n < 10 ? `0${n}` : `${n}`;
-}
-
-function toDateString(date: Date): string {
-	return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-}
-
-function startOfMonth(date: Date): string {
-	return toDateString(new Date(date.getFullYear(), date.getMonth(), 1));
-}
-
-function endOfMonth(date: Date): string {
-	return toDateString(new Date(date.getFullYear(), date.getMonth() + 1, 0));
-}
-
 export default function TransactionFilters({ value, onChange }: Props) {
-	const thisMonthStart = startOfMonth(new Date());
-	const thisMonthEnd = endOfMonth(new Date());
-	const isThisMonthActive =
-		value.startDate === thisMonthStart && value.endDate === thisMonthEnd;
-
 	const hasActiveFilters =
-		!!value.search || !!value.startDate || !!value.endDate;
-
-	function handleThisMonthPress() {
-		if (isThisMonthActive) {
-			onChange({ ...value, startDate: null, endDate: null });
-			return;
-		}
-		onChange({ ...value, startDate: thisMonthStart, endDate: thisMonthEnd });
-	}
+		!!value.search || !!value.from || !!value.to;
 
 	function handleClearAll() {
-		onChange({ search: "", startDate: null, endDate: null });
+		onChange({ search: "", from: undefined, to: undefined });
 	}
 
 	return (
@@ -57,49 +29,32 @@ export default function TransactionFilters({ value, onChange }: Props) {
 				dense
 			/>
 
+			<View style={styles.dateRow}>
+				<View style={styles.dateField}>
+					<DatePickerInput
+							locale="en"
+							label="From"
+							value={value.from}
+							onChange={(d) => onChange({ ...value, "from": d})}
+							inputMode="start"
+						/>
+				</View>
+				<View style={styles.dateField}>
+					<DatePickerInput
+							locale="en"
+							label="To"
+							value={value.to}
+							onChange={(d) => onChange({ ...value, "to": d})}
+							inputMode="start"
+						/>
+				</View>
+			</View>
 			<View style={styles.chipRow}>
-				<Chip
-					selected={isThisMonthActive}
-					onPress={handleThisMonthPress}
-					icon="calendar-month-outline"
-					compact
-				>
-					This month
-				</Chip>
 				{hasActiveFilters && (
 					<Chip onPress={handleClearAll} icon="close" compact>
 						Clear filters
 					</Chip>
 				)}
-			</View>
-
-			<View style={styles.dateRow}>
-				<View style={styles.dateField}>
-					<TextInput
-						mode="outlined"
-						label="From"
-						placeholder="YYYY-MM-DD"
-						value={value.startDate ?? ""}
-						onChangeText={(v) =>
-							onChange({ ...value, startDate: v.trim() || null })
-						}
-						style={styles.input}
-						dense
-					/>
-				</View>
-				<View style={styles.dateField}>
-					<TextInput
-						mode="outlined"
-						label="To"
-						placeholder="YYYY-MM-DD"
-						value={value.endDate ?? ""}
-						onChangeText={(v) =>
-							onChange({ ...value, endDate: v.trim() || null })
-						}
-						style={styles.input}
-						dense
-					/>
-				</View>
 			</View>
 		</View>
 	);

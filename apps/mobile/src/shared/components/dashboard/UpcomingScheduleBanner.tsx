@@ -19,7 +19,7 @@ export function UpcomingScheduleBanner({ data }: UpcomingScheduleBannerProps) {
 			onPress={() => router.push("/(tabs)/schedules")}
 			style={[
 				styles.container,
-				{ backgroundColor: theme.colors.primaryContainer },
+				{ backgroundColor: "#cde2fb" },
 			]}
 		>
 			<Icon

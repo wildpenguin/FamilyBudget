@@ -3,9 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
 	fetchBalanceSummary,
 	fetchMonthlyChartData,
-	fetchPeriodSummary,
 	fetchRecentTransactions,
-	fetchTopCategories,
 	fetchUpcomingSchedule,
 } from "./dashboardApi";
 
@@ -20,24 +18,10 @@ export function useBalanceSummary() {
 	});
 }
 
-export function usePeriodSummary() {
-	return useQuery({
-		queryKey: ["dashboard", "periodSummary"],
-		queryFn: fetchPeriodSummary,
-	});
-}
-
 export function useMonthlyChartData() {
 	return useQuery({
 		queryKey: ["dashboard", "monthlyChart"],
 		queryFn: fetchMonthlyChartData,
-	});
-}
-
-export function useTopCategories() {
-	return useQuery({
-		queryKey: ["dashboard", "topCategories"],
-		queryFn: fetchTopCategories,
 	});
 }
 

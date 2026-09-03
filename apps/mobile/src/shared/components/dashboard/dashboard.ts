@@ -2,12 +2,7 @@ export type BalanceSummary = {
 	totalIncomeCents: number;
 	totalExpensesCents: number;
 	totalNetCents: number;
-	byCategory: [];
-};
-
-export type PeriodSummary = {
-	totalIncome: number;
-	totalExpenses: number;
+	byCategory: CategoryBreakdown[];
 };
 
 export type MonthlyChartPoint = {

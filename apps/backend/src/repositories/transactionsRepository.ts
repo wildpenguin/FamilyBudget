@@ -2,7 +2,7 @@ import type {
 	InputTransactionsType,
 	UpdateTransactionType,
 } from "@ourbudget/shared";
-import { and, asc, desc, eq, gte, lte, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, lte, sql, like } from "drizzle-orm";
 import { db } from "../db";
 import { categories } from "../db/schema/categories";
 import { transactions } from "../db/schema/transactions";
@@ -75,8 +75,9 @@ export const transactionsRepository = {
 	async get(
 		familyId: number,
 		transactionId?: number,
-		filter?: { from?: string; to?: string; type?: "expense" | "income" },
+		filter?: { from?: string; to?: string; type?: "expense" | "income"; search: string},
 		sort?: "asc" | "desc",
+		pageSize = 100,
 	) {
 		const conditions = [eq(transactions.familyId, familyId)];
 
@@ -92,15 +93,18 @@ export const transactionsRepository = {
 		if (filter?.type) {
 			conditions.push(eq(transactions.type, filter.type));
 		}
+		if (filter?.search) {
+			conditions.push(like(transactions.description, `%${filter.search}%`))
+		}
 
 		const sortFn = sort === "asc" ? asc : desc;
-
 		const results = await db
 			.select()
 			.from(transactions)
 			.where(and(...conditions))
 			.leftJoin(categories, eq(categories.id, transactions.categoryId))
-			.orderBy(sortFn(transactions.date));
+			.orderBy(sortFn(transactions.date))
+			.limit(pageSize);
 
 		return results;
 	},

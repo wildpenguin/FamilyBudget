@@ -18,9 +18,11 @@ const transactionDateQuery = z.object({
 			from: z.iso.date().optional(),
 			to: z.iso.date().optional(),
 			type: z.enum(["expense", "income"]).optional(),
+			search: z.string().optional(),
 		})
 		.optional(),
 	sort: z.enum(["asc", "desc"]).optional(),
+	limit: z.coerce.number().optional(),
 });
 
 export const transactionsController = {
@@ -52,6 +54,7 @@ export const transactionsController = {
 			undefined,
 			filterQuery.data.filter,
 			filterQuery.data.sort,
+			filterQuery.data.limit,
 		);
 		return res.json({
 			data: transactions,

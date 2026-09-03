@@ -24,12 +24,12 @@ export type UpdateTransaction = Partial<Omit<Transaction, "id">> & {
 
 export interface TransactionFilters {
 	search: string;
-	startDate: string | null; // YYYY-MM-DD, inclusive
-	endDate: string | null; // YYYY-MM-DD, inclusive
+	from:  Date | undefined; 
+	to:  Date | undefined; 
 }
 
 export const defaultTransactionFilters: TransactionFilters = {
 	search: "",
-	startDate: null,
-	endDate: null,
+	from: undefined,
+	to: undefined,
 };

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import {
 	ActivityIndicator,
-	Icon,
 	IconButton,
 	Text,
 	useTheme,
@@ -24,7 +23,7 @@ export function BalanceCard({ data, isLoading }: BalanceCardProps) {
 		: "—";
 
 	return (
-		<View style={[styles.card, { backgroundColor: theme.colors.primary }]}>
+		<View style={[styles.card, { backgroundColor: "#2b78d6"}]}>
 			<View style={styles.headerRow}>
 				<Text style={[styles.label, { color: theme.colors.onPrimary }]}>
 					Current Balance
@@ -78,28 +77,5 @@ const styles = StyleSheet.create({
 		alignSelf: "flex-start",
 		marginTop: 12,
 		marginBottom: 10,
-	},
-	trendRow: {
-		flexDirection: "row",
-		alignItems: "center",
-		gap: 6,
-		marginTop: 10,
-	},
-	trendPill: {
-		flexDirection: "row",
-		alignItems: "center",
-		gap: 3,
-		backgroundColor: "rgba(255,255,255,0.2)",
-		borderRadius: 20,
-		paddingHorizontal: 8,
-		paddingVertical: 2,
-	},
-	trendText: {
-		fontSize: 11,
-		fontWeight: "600",
-	},
-	trendCaption: {
-		fontSize: 11,
-		opacity: 0.8,
 	},
 });

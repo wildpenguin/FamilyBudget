@@ -24,7 +24,7 @@ export default function ProfileScreen() {
 			style={[styles.container, { backgroundColor: theme.colors.background }]}
 		>
 			<Avatar.Icon
-				icon="account"
+				icon="account-outline"
 				size={72}
 				style={{ backgroundColor: theme.colors.primary }}
 			/>

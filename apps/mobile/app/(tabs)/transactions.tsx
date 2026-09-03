@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import TransactionFilters from "../../src/shared/components/transactions/TransactionFilters";
 import TransactionList from "../../src/shared/components/transactions/TransactionList";
 import {
@@ -14,7 +14,9 @@ export default function TransactionsScreen() {
 		<ScrollView
 			contentContainerStyle={styles.content}
 			keyboardShouldPersistTaps="handled"
-		>
+		><View>
+			<Text>Transactions Overview</Text>
+		</View>
 			<TransactionFilters value={filters} onChange={setFilters} />
 			<TransactionList filters={filters} />
 		</ScrollView>

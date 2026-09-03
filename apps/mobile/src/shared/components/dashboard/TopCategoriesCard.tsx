@@ -53,7 +53,7 @@ export function TopCategoriesCard({ data }: TopCategoriesCardProps) {
 							<ProgressBar
 								progress={category.percentOfMax}
 								style={styles.progress}
-								theme={{ colors: { primary: "#8b4061" } }}
+								theme={{ colors: { primary: theme.colors.primary } }}
 							/>
 						</View>
 					</View>
@@ -64,14 +64,6 @@ export function TopCategoriesCard({ data }: TopCategoriesCardProps) {
 }
 
 const styles = StyleSheet.create({
-	container: {
-		padding: 8,
-	},
-
-	title: {
-		marginBottom: 6,
-	},
-
 	category: {
 		flexDirection: "row",
 		alignItems: "center",
@@ -106,10 +98,5 @@ const styles = StyleSheet.create({
 	progress: {
 		height: 6,
 		borderRadius: 3,
-	},
-
-	limit: {
-		marginTop: 4,
-		opacity: 0.6,
 	},
 });
