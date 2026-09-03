@@ -2,8 +2,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiFetch } from "../../utils/apiConfig";
 import type { Transaction, TransactionFilters } from "./types";
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 async function fetchTransactions(
 	filters: TransactionFilters,
 ): Promise<Transaction[]> {
@@ -11,8 +9,8 @@ async function fetchTransactions(
 	return response.data;
 }
 
-async function deleteTransactionById(id: string): Promise<{ id: string }> {
-	return { id: "1" };
+async function deleteTransactionById(id: number): Promise<{ id: number }> {
+	return { id };
 }
 
 // ---------------------------------------------------------------------------

@@ -11,6 +11,10 @@ schedulesRouter.get(
 	schedulesController.getSchedules as RequestHandler,
 );
 schedulesRouter.get(
+	"/schedules/upcoming",
+	schedulesController.getUpcoming as RequestHandler,
+);
+schedulesRouter.get(
 	"/schedules/:id",
 	schedulesController.getSchedules as RequestHandler,
 );

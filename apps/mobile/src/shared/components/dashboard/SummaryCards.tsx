@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import { Icon, type MD3Theme, Text } from "react-native-paper";
 import { useAppTheme } from "../../theme";
-import { centsToDollars } from "../../utils/money";
+import { centsToDollars, formatCentsAsCurrency } from "../../utils/money";
 import type { BalanceSummary } from "./dashboard";
 
 type SummaryCardsProps = {
@@ -15,7 +15,7 @@ export function SummaryCards({ data }: SummaryCardsProps) {
 		<View style={styles.row}>
 			<SummaryCard
 				label="Income"
-				amount={centsToDollars(data?.totalIncomeCents)}
+				amount={data?.totalIncomeCents}
 				icon="arrow-up"
 				tint={{
 					background: theme.colors.income,
@@ -25,7 +25,7 @@ export function SummaryCards({ data }: SummaryCardsProps) {
 			/>
 			<SummaryCard
 				label="Expenses"
-				amount={centsToDollars(data?.totalExpensesCents)}
+				amount={data?.totalExpensesCents}
 				icon="arrow-down"
 				tint={{
 					background: theme.colors.expense,
@@ -46,7 +46,7 @@ type SummaryCardProps = {
 };
 
 function SummaryCard({ label, amount, icon, tint, theme }: SummaryCardProps) {
-	const formatted = amount !== undefined ? `$${amount.toLocaleString()}` : "—";
+	const formatted = amount !== undefined ? formatCentsAsCurrency(amount) : "—";
 
 	return (
 		<View

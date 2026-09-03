@@ -99,6 +99,7 @@ export const transactionsRepository = {
 			.select()
 			.from(transactions)
 			.where(and(...conditions))
+			.leftJoin(categories, eq(categories.id, transactions.categoryId))
 			.orderBy(sortFn(transactions.date));
 
 		return results;

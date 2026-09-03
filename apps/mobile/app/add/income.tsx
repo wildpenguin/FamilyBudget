@@ -23,7 +23,7 @@ export default function AddIncomeScreen() {
 			style={{ backgroundColor: theme.colors.background }}
 			contentContainerStyle={[styles.content, { paddingTop: insets.top + 16 }]}
 			data={incomeQuery.data ?? []}
-			keyExtractor={(item) => String(item.id)}
+			keyExtractor={(item) => String(item.transactions.id)}
 			ListHeaderComponent={
 				<View>
 					<Text style={[styles.title, { color: theme.colors.onSurface }]}>
@@ -49,7 +49,8 @@ export default function AddIncomeScreen() {
 					income={item}
 					onDelete={(id) => deleteMutation.mutate(id)}
 					isDeleting={
-						deleteMutation.isPending && deleteMutation.variables === item.id
+						deleteMutation.isPending &&
+						deleteMutation.variables === item.transactions.id
 					}
 				/>
 			)}

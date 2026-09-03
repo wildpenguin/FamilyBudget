@@ -73,13 +73,9 @@ export async function fetchTopCategories(): Promise<CategoryBreakdown[]> {
 }
 
 export async function fetchUpcomingSchedule(): Promise<UpcomingSchedule | null> {
-	// return (await fetch(`${API_URL}/schedules/next`)).json();
-	return delay({
-		id: "sched-1",
-		title: "Car insurance",
-		dueInDays: 3,
-		amount: 85,
-	});
+	const response = await apiFetch("/schedules/upcoming");
+
+	return response.data;
 }
 
 export async function fetchRecentTransactions(): Promise<Transaction[]> {

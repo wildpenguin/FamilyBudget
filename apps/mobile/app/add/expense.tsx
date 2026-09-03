@@ -23,7 +23,7 @@ export default function AddExpenseScreen() {
 			style={{ backgroundColor: theme.colors.background }}
 			contentContainerStyle={[styles.content, { paddingTop: insets.top + 16 }]}
 			data={expensesQuery.data ?? []}
-			keyExtractor={(item) => String(item.id)}
+			keyExtractor={(item) => String(item.transactions.id)}
 			ListHeaderComponent={
 				<View>
 					<Text style={[styles.title, { color: theme.colors.onSurface }]}>
@@ -49,9 +49,10 @@ export default function AddExpenseScreen() {
 			renderItem={({ item }) => (
 				<ExpenseListItem
 					expense={item}
-					onDelete={(id) => deleteMutation.mutate(id)}
+					onDelete={(id) => deleteMutation.mutate(Number(id))}
 					isDeleting={
-						deleteMutation.isPending && deleteMutation.variables === item.id
+						deleteMutation.isPending &&
+						deleteMutation.variables === item.transactions.id
 					}
 				/>
 			)}

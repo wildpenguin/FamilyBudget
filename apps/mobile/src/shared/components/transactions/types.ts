@@ -1,12 +1,20 @@
 export type TransactionType = "income" | "expense";
 
 export interface Transaction {
-	id: string;
-	type: TransactionType;
-	description: string;
-	category: string;
-	amountCents: number; // always stored positive; sign is derived from `type`
-	date: string; // ISO date, e.g. "2026-08-14"
+	transactions: {
+		id: number;
+		type: TransactionType;
+		description: string;
+		category: string;
+		amountCents: number; // always stored positive; sign is derived from `type`
+		date: string; // ISO date, e.g. "2026-08-14"
+	};
+	categories: {
+		id: number;
+		familyId: number;
+		name: string;
+		type: "income" | "expense";
+	};
 }
 
 // Shape sent when updating an existing transaction

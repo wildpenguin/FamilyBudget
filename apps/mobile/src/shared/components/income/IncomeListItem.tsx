@@ -2,6 +2,7 @@ import type { GetTransactionType } from "@ourbudget/shared";
 import { StyleSheet, View } from "react-native";
 import { Icon, IconButton, Text } from "react-native-paper";
 import { useAppTheme } from "../../theme";
+import { formatDateOnly } from "../../utils/dates";
 import { centsToDollars } from "../../utils/money";
 
 type IncomeListItemProps = {
@@ -10,18 +11,13 @@ type IncomeListItemProps = {
 	isDeleting: boolean;
 };
 
-function formatDate(iso: string): string {
-	const date = new Date(iso);
-	return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-}
-
 export function IncomeListItem({
 	income,
 	onDelete,
 	isDeleting,
 }: IncomeListItemProps) {
 	const theme = useAppTheme();
-
+	const { transactions, categories } = income;
 	return (
 		<View style={styles.row}>
 			<View
@@ -32,7 +28,7 @@ export function IncomeListItem({
 
 			<View style={styles.textContainer}>
 				<Text style={{ fontSize: 14, color: theme.colors.onSurface }}>
-					{income.description}
+					{transactions.description}
 				</Text>
 				<Text
 					style={{
@@ -41,7 +37,7 @@ export function IncomeListItem({
 						marginTop: 1,
 					}}
 				>
-					{income.categoryId} · {formatDate(income.date)}
+					{categories.name} · {formatDateOnly(transactions.date)}
 				</Text>
 			</View>
 
@@ -53,13 +49,13 @@ export function IncomeListItem({
 					marginRight: 4,
 				}}
 			>
-				+${centsToDollars(income.amountCents)}
+				+${centsToDollars(transactions.amountCents)}
 			</Text>
 
 			<IconButton
 				icon="trash-can-outline"
 				size={18}
-				onPress={() => onDelete(income.id)}
+				onPress={() => onDelete(transactions.id)}
 				disabled={isDeleting}
 			/>
 		</View>

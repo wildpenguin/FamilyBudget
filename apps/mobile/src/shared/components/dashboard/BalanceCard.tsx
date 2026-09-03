@@ -7,7 +7,7 @@ import {
 	Text,
 	useTheme,
 } from "react-native-paper";
-import { centsToDollars } from "../../utils/money";
+import { formatCentsAsCurrency } from "../../utils/money";
 import type { BalanceSummary } from "./dashboard";
 
 type BalanceCardProps = {
@@ -19,7 +19,9 @@ export function BalanceCard({ data, isLoading }: BalanceCardProps) {
 	const theme = useTheme();
 	const [isHidden, setIsHidden] = useState(false);
 
-	const formattedBalance = data ? centsToDollars(data.totalNetCents) : "—";
+	const formattedBalance = data
+		? formatCentsAsCurrency(data.totalNetCents)
+		: "—";
 
 	return (
 		<View style={[styles.card, { backgroundColor: theme.colors.primary }]}>

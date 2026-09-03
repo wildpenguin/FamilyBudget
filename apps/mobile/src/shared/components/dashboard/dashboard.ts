@@ -25,10 +25,11 @@ export type CategoryBreakdown = {
 };
 
 export type UpcomingSchedule = {
-	id: string;
 	title: string;
 	dueInDays: number;
-	amount: number;
+	amountCents: number;
+	type: string;
+	category: string;
 };
 
 export type Transaction = {

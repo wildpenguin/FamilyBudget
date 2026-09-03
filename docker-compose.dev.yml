@@ -9,6 +9,7 @@ services:
       - "3000:3000"
     environment:
       NODE_ENV: development
+      TZ: UTC
       DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
       MIGRATIONS_DATABASE_URL: postgresql://${DB_SUPERUSER}:${DB_SUPERUSER_PASSWORD}@db:5432/${DB_NAME}
       TEST_DATABASE_URL: postgresql://${DB_SUPERUSER}:${DB_SUPERUSER_PASSWORD}@db:5432/${TEST_DB}
@@ -28,6 +29,7 @@ services:
     container_name: db-dev
     restart: unless-stopped
     environment:
+      TZ: UTC
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_SUPERUSER}
       POSTGRES_PASSWORD: ${DB_SUPERUSER_PASSWORD}

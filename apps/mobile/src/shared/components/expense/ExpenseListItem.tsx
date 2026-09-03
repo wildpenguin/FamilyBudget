@@ -2,6 +2,7 @@ import { format, parse } from "date-fns";
 import { StyleSheet, View } from "react-native";
 import { Icon, IconButton, Text } from "react-native-paper";
 import { useAppTheme } from "../../theme";
+import { formatDateOnly } from "../../utils/dates";
 import { centsToDollars } from "../../utils/money";
 
 type ExpenseListItemProps = {
@@ -16,7 +17,7 @@ export function ExpenseListItem({
 	isDeleting,
 }: ExpenseListItemProps) {
 	const theme = useAppTheme();
-
+	const { transactions, categories } = expense;
 	return (
 		<View style={styles.row}>
 			<View
@@ -27,7 +28,7 @@ export function ExpenseListItem({
 
 			<View style={styles.textContainer}>
 				<Text style={{ fontSize: 14, color: theme.colors.onSurface }}>
-					{expense.description}
+					{transactions.description}
 				</Text>
 				<Text
 					style={{
@@ -36,7 +37,7 @@ export function ExpenseListItem({
 						marginTop: 1,
 					}}
 				>
-					{expense.categoryId} · {format(expense.date, "d LLL")}
+					{categories.name} · {formatDateOnly(transactions.date)}
 				</Text>
 			</View>
 
@@ -48,13 +49,13 @@ export function ExpenseListItem({
 					marginRight: 4,
 				}}
 			>
-				-${centsToDollars(expense.amountCents)}
+				-${centsToDollars(transactions.amountCents)}
 			</Text>
 
 			<IconButton
 				icon="trash-can-outline"
 				size={18}
-				onPress={() => onDelete(expense.id)}
+				onPress={() => onDelete(transactions.id)}
 				disabled={isDeleting}
 			/>
 		</View>

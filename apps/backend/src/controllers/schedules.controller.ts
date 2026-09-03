@@ -1,4 +1,17 @@
 import { ScheduleInput, UpdateScheduleInput } from "@ourbudget/shared";
+import {
+	addDays,
+	addMonths,
+	addWeeks,
+	differenceInDays,
+	fromUnixTime,
+	getDate,
+	getDay,
+	getWeekOfMonth,
+	setDate,
+	startOfMonth,
+	startOfWeek,
+} from "date-fns";
 import type { Response } from "express";
 import { z } from "zod";
 import { familyMembersRepository } from "../repositories/familyMembersRepository";
@@ -102,5 +115,95 @@ export const schedulesController = {
 				total: schedules.length,
 			},
 		});
+	},
+	async getUpcoming(req: AuthenticatedRequest, res: Response) {
+		const family = await familyMembersRepository.findByUser(req.userId);
+		if (!family) {
+			return res.status(400).json({ error: "No groups found for this user" });
+		}
+		const all = await schedulesRepository.get(family.familyId);
+		const currentWeek = getWeekOfMonth(new Date());
+		const currentWeekDay = getDay(new Date());
+		const today = new Date();
+
+		const upcoming = all
+			.map(({ schedules, categories }, index) => {
+				const dayOfWeek = schedules.dayOfWeek ?? 1; // default always Monday
+
+				switch (schedules.frequency) {
+					case "weekly":
+						if (currentWeekDay < dayOfWeek) {
+							return {
+								index,
+								timestamp: addDays(startOfWeek(today), dayOfWeek).getTime(),
+							};
+						}
+						return {
+							index,
+							timestamp: addDays(
+								startOfWeek(addWeeks(today, 1)),
+								dayOfWeek,
+							).getTime(),
+						};
+					case "biweekly":
+						if (currentWeek % 2 !== 0) {
+							// biweekly happens 2, 4 week of month and we only want the 1, 3 weeks
+							return {
+								index,
+								timestamp: addDays(
+									startOfWeek(addWeeks(today, 1)),
+									dayOfWeek,
+								).getTime(),
+							};
+						}
+						return undefined;
+					case "monthly":
+						if (!schedules.dayOfMonth) {
+							return undefined;
+						}
+						if (getDate(today) <= schedules.dayOfMonth) {
+							return {
+								index,
+								timestamp: setDate(today, schedules.dayOfMonth).getTime(),
+							};
+						}
+						return {
+							index,
+							timestamp: setDate(
+								addMonths(startOfMonth(today), 1),
+								schedules.dayOfMonth,
+							).getTime(),
+						};
+					default:
+						throw new Error(`Unsupported frequency: ${schedules.frequency}`);
+				}
+			})
+			.filter(
+				(item): item is { index: number; timestamp: number } =>
+					item !== undefined,
+			);
+
+		const closest =
+			upcoming.length > 0
+				? upcoming.reduce((min, current) =>
+						current.timestamp < min.timestamp ? current : min,
+					)
+				: null;
+		if (closest) {
+			const { schedules, categories } = all[closest.index];
+
+			return res.json({
+				data: {
+					dueInDays: differenceInDays(new Date(closest.timestamp), today),
+					amountCents: schedules.amountCents,
+					title: schedules.description,
+					category: categories?.name,
+					type: categories?.type,
+				},
+				meta: {},
+			});
+		}
+
+		return res.json({ data: {}, meta: {} });
 	},
 };

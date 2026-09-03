@@ -28,14 +28,22 @@ export const UpdateTransactionInput = TransactionsInput.pick({
 export type UpdateTransactionType = z.infer<typeof UpdateTransactionInput>;
 
 export type GetTransactionType = {
-	id: number;
-	familyId: number;
-	categoryId: number;
-	scheduleId?: number;
-	createdByUserId: number;
-	amountCents: number;
-	type: "expense" | "income";
-	date: string;
-	description?: string;
-	status: string;
+	transactions: {
+		id: number;
+		familyId: number;
+		categoryId: number;
+		scheduleId?: number;
+		createdByUserId: number;
+		amountCents: number;
+		type: "expense" | "income";
+		date: string;
+		description?: string;
+		status: string;
+	};
+	categories: {
+		id: number;
+		familyId: number;
+		name: string;
+		type: "income" | "expense";
+	};
 };

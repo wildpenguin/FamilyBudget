@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheet, View } from "react-native";
 import {
 	ActivityIndicator,
@@ -7,6 +6,7 @@ import {
 	IconButton,
 	Text,
 } from "react-native-paper";
+import { formatDateOnly } from "../../utils/dates";
 import { centsToDollars } from "../../utils/money";
 import { useDeleteTransaction, useTransactions } from "./transactions";
 import type { Transaction, TransactionFilters } from "./types";
@@ -18,13 +18,14 @@ interface Props {
 
 interface RowProps {
 	item: Transaction;
-	onDelete: (id: string) => void;
+	onDelete: (id: number) => void;
 	onEdit?: (transaction: Transaction) => void;
 	deleting: boolean;
 }
 
 function TransactionRow({ item, onDelete, onEdit, deleting }: RowProps) {
-	const isIncome = item.type === "income";
+	const { transactions, categories } = item;
+	const isIncome = transactions.type === "income";
 	const sign = isIncome ? "+" : "-";
 
 	return (
@@ -39,15 +40,16 @@ function TransactionRow({ item, onDelete, onEdit, deleting }: RowProps) {
 
 				<View style={styles.info}>
 					<Text style={styles.description} numberOfLines={1}>
-						{item.description}
+						{transactions.description}
 					</Text>
 					<Text style={styles.category} numberOfLines={1}>
-						{item.categoryId} {item.date}
+						{formatDateOnly(transactions.date)} {" / "}
+						{categories.name}
 					</Text>
 				</View>
 
 				<Text style={[styles.amount, isIncome && styles.incomeAmount]}>
-					{sign}${centsToDollars(item.amountCents)}
+					{sign}${centsToDollars(transactions.amountCents)}
 				</Text>
 
 				<IconButton
@@ -58,7 +60,7 @@ function TransactionRow({ item, onDelete, onEdit, deleting }: RowProps) {
 				<IconButton
 					icon="trash-can-outline"
 					size={18}
-					onPress={() => onDelete(item.id)}
+					onPress={() => onDelete(transactions.id)}
 					disabled={deleting}
 				/>
 			</View>
@@ -67,11 +69,8 @@ function TransactionRow({ item, onDelete, onEdit, deleting }: RowProps) {
 }
 
 export default function TransactionList({ filters, onEditTransaction }: Props) {
-	const {
-		data: transactions = [],
-		isLoading,
-		isError,
-	} = useTransactions(filters);
+	const { data = [], isLoading, isError } = useTransactions(filters);
+
 	const deleteMutation = useDeleteTransaction();
 
 	if (isLoading) {
@@ -90,7 +89,7 @@ export default function TransactionList({ filters, onEditTransaction }: Props) {
 		);
 	}
 
-	if (transactions.length === 0) {
+	if (data.length === 0) {
 		return (
 			<View style={styles.centered}>
 				<Text style={styles.emptyText}>
@@ -102,9 +101,9 @@ export default function TransactionList({ filters, onEditTransaction }: Props) {
 
 	return (
 		<View style={styles.list}>
-			{transactions.map((item) => (
+			{data.map((item) => (
 				<TransactionRow
-					key={item.id}
+					key={item.transactions.id}
 					item={item}
 					onDelete={(id) => deleteMutation.mutate(id)}
 					onEdit={onEditTransaction}

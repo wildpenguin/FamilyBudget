@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { Pressable, StyleSheet, View } from "react-native";
 import { Icon, Text, useTheme } from "react-native-paper";
-
+import { formatCentsAsCurrency } from "../../utils/money";
 import type { UpcomingSchedule } from "./dashboard";
 
 type UpcomingScheduleBannerProps = {
@@ -14,7 +14,6 @@ export function UpcomingScheduleBanner({ data }: UpcomingScheduleBannerProps) {
 	if (!data) {
 		return null;
 	}
-
 	return (
 		<Pressable
 			onPress={() => router.push("/(tabs)/schedules")}
@@ -45,8 +44,8 @@ export function UpcomingScheduleBanner({ data }: UpcomingScheduleBannerProps) {
 						opacity: 0.8,
 					}}
 				>
-					Due in {data.dueInDays} {data.dueInDays === 1 ? "day" : "days"} · $
-					{data.amount.toFixed(2)}
+					Due in {data.dueInDays} {data.dueInDays === 1 ? "day" : "days"} ·
+					{formatCentsAsCurrency(data.amountCents)}
 				</Text>
 			</View>
 		</Pressable>

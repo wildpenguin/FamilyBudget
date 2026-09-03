@@ -39,7 +39,7 @@ export default function Home() {
 			<View style={styles.headerRow}>
 				<View>
 					<Text style={{ fontSize: 13, color: theme.colors.onSurfaceVariant }}>
-						Good morning
+						Welcome,
 					</Text>
 					<Text
 						style={{
