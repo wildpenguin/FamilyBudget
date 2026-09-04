@@ -111,11 +111,12 @@ const styles = StyleSheet.create({
 		paddingBottom: 8,
 		flexDirection: "row",
 		alignItems: "flex-end",
-		justifyContent: "space-between",
+		justifyContent: "flex-start",
+		gap: 20,
 		height: 100,
 	},
 	barGroup: {
-		alignItems: "center",
+		alignItems: "flex-start",
 		gap: 4,
 	},
 	bars: {

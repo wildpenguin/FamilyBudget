@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Chip, TextInput } from "react-native-paper";
-import type { TransactionFilters as Filters } from "./types";
 import { DatePickerInput } from "react-native-paper-dates";
+import type { TransactionFilters as Filters } from "./types";
 
 interface Props {
 	value: Filters;
@@ -10,8 +10,7 @@ interface Props {
 }
 
 export default function TransactionFilters({ value, onChange }: Props) {
-	const hasActiveFilters =
-		!!value.search || !!value.from || !!value.to;
+	const hasActiveFilters = !!value.search || !!value.from || !!value.to;
 
 	function handleClearAll() {
 		onChange({ search: "", from: undefined, to: undefined });
@@ -32,21 +31,21 @@ export default function TransactionFilters({ value, onChange }: Props) {
 			<View style={styles.dateRow}>
 				<View style={styles.dateField}>
 					<DatePickerInput
-							locale="en"
-							label="From"
-							value={value.from}
-							onChange={(d) => onChange({ ...value, "from": d})}
-							inputMode="start"
-						/>
+						locale="en"
+						label="From"
+						value={value.from}
+						onChange={(d) => onChange({ ...value, from: d })}
+						inputMode="start"
+					/>
 				</View>
 				<View style={styles.dateField}>
 					<DatePickerInput
-							locale="en"
-							label="To"
-							value={value.to}
-							onChange={(d) => onChange({ ...value, "to": d})}
-							inputMode="start"
-						/>
+						locale="en"
+						label="To"
+						value={value.to}
+						onChange={(d) => onChange({ ...value, to: d })}
+						inputMode="start"
+					/>
 				</View>
 			</View>
 			<View style={styles.chipRow}>

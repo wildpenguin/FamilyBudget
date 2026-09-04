@@ -21,7 +21,6 @@ export function SummaryCards({ data }: SummaryCardsProps) {
 					background: theme.colors.income,
 					foreground: "#016301",
 					boxBackground: theme.colors.income,
-		
 				}}
 				theme={theme}
 			/>
@@ -32,7 +31,7 @@ export function SummaryCards({ data }: SummaryCardsProps) {
 				tint={{
 					background: theme.colors.expense,
 					foreground: theme.colors.error,
-					boxBackground: theme.colors.expense
+					boxBackground: theme.colors.expense,
 				}}
 				theme={theme}
 			/>
@@ -44,7 +43,7 @@ type SummaryCardProps = {
 	label: string;
 	amount: number | undefined;
 	icon: string;
-	tint: { background: string; foreground: string; boxBackground: string; };
+	tint: { background: string; foreground: string; boxBackground: string };
 	theme: MD3Theme;
 };
 
@@ -52,16 +51,12 @@ function SummaryCard({ label, amount, icon, tint, theme }: SummaryCardProps) {
 	const formatted = amount !== undefined ? formatCentsAsCurrency(amount) : "—";
 
 	return (
-		<View
-			style={[styles.card, { backgroundColor: tint.boxBackground }]}
-		>
+		<View style={[styles.card, { backgroundColor: tint.boxBackground }]}>
 			<View style={styles.labelRow}>
 				<View style={[styles.iconCircle, { backgroundColor: tint.background }]}>
 					<Icon source={icon} size={13} color={tint.foreground} />
 				</View>
-				<Text style={{ fontSize: 13, color: tint.foreground }}>
-					{label}
-				</Text>
+				<Text style={{ fontSize: 13, color: tint.foreground }}>{label}</Text>
 			</View>
 			<Text
 				style={[

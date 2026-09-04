@@ -17,10 +17,7 @@ export function UpcomingScheduleBanner({ data }: UpcomingScheduleBannerProps) {
 	return (
 		<Pressable
 			onPress={() => router.push("/(tabs)/schedules")}
-			style={[
-				styles.container,
-				{ backgroundColor: "#cde2fb" },
-			]}
+			style={[styles.container, { backgroundColor: "#cde2fb" }]}
 		>
 			<Icon
 				source="calendar-refresh-outline"

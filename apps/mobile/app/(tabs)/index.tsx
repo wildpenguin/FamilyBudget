@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { Avatar, Text } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -13,10 +14,8 @@ import {
 	useRecentTransactions,
 	useUpcomingSchedule,
 } from "../../src/shared/components/dashboard/useDashboardQueries";
-
 import { useAuth } from "../../src/shared/context/AuthContext";
 import { useAppTheme } from "../../src/shared/theme";
-import { router } from "expo-router";
 
 export default function Home() {
 	const theme = useAppTheme();

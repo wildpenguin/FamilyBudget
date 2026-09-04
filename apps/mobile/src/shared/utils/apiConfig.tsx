@@ -29,7 +29,8 @@ export async function apiFetch(url: string, options: RequestInit = {}) {
 		},
 	});
 	if (!response.ok) {
-		throw new Error(`API error: ' ${response.status}`);
+		const errorBody = await response.json().catch(() => null);
+		throw new Error(errorBody?.error ?? `Request failed: ${response.status}`);
 	}
 
 	return response.json();

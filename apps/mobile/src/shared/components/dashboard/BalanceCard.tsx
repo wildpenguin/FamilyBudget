@@ -23,7 +23,7 @@ export function BalanceCard({ data, isLoading }: BalanceCardProps) {
 		: "—";
 
 	return (
-		<View style={[styles.card, { backgroundColor: "#2b78d6"}]}>
+		<View style={[styles.card, { backgroundColor: "#2b78d6" }]}>
 			<View style={styles.headerRow}>
 				<Text style={[styles.label, { color: theme.colors.onPrimary }]}>
 					Current Balance

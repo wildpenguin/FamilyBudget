@@ -14,9 +14,10 @@ export default function TransactionsScreen() {
 		<ScrollView
 			contentContainerStyle={styles.content}
 			keyboardShouldPersistTaps="handled"
-		><View>
-			<Text>Transactions Overview</Text>
-		</View>
+		>
+			<View>
+				<Text>Transactions Overview</Text>
+			</View>
 			<TransactionFilters value={filters} onChange={setFilters} />
 			<TransactionList filters={filters} />
 		</ScrollView>

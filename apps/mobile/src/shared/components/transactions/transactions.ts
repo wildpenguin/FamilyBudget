@@ -1,19 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { format } from "date-fns";
 import { apiFetch } from "../../utils/apiConfig";
 import type { Transaction, TransactionFilters } from "./types";
-import { format } from "date-fns";
 
 async function fetchTransactions(
 	filters: TransactionFilters,
 ): Promise<Transaction[]> {
-	const params = new URLSearchParams(Object.entries(filters)
-		.filter(([k, v]) => v !== undefined && v !== "")
-		.map(([k, v]) => [
-			`filter[${k}]`, 
-			v instanceof Date ? format(v, 'yyyy-MM-dd') : v])
+	const params = new URLSearchParams(
+		Object.entries(filters)
+			.filter(([k, v]) => v !== undefined && v !== "")
+			.map(([k, v]) => [
+				`filter[${k}]`,
+				v instanceof Date ? format(v, "yyyy-MM-dd") : v,
+			]),
 	);
 	const response = await apiFetch(`/transactions?${params}`, {
-		method: "GET"
+		method: "GET",
 	});
 	return response.data;
 }

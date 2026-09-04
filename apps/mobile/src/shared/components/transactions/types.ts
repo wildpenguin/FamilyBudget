@@ -24,8 +24,8 @@ export type UpdateTransaction = Partial<Omit<Transaction, "id">> & {
 
 export interface TransactionFilters {
 	search: string;
-	from:  Date | undefined; 
-	to:  Date | undefined; 
+	from: Date | undefined;
+	to: Date | undefined;
 }
 
 export const defaultTransactionFilters: TransactionFilters = {

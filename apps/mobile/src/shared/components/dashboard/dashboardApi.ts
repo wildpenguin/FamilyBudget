@@ -1,4 +1,4 @@
-import { GetTransactionType } from "@ourbudget/shared";
+import type { GetTransactionType } from "@ourbudget/shared";
 import { apiFetch } from "../../utils/apiConfig";
 import type {
 	BalanceSummary,
@@ -41,8 +41,7 @@ export async function fetchUpcomingSchedule(): Promise<UpcomingSchedule | null> 
 }
 
 export async function fetchRecentTransactions(): Promise<GetTransactionType[]> {
-	const recent = await apiFetch('/transactions?limit=3');
+	const recent = await apiFetch("/transactions?limit=3");
 
 	return recent.data;
-	
 }

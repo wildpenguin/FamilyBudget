@@ -13,7 +13,7 @@ familyInviteRouter.post(
 	"/familyInvites",
 	FamilyInvitesController.create as RequestHandler,
 );
-familyInviteRouter.post(
+familyInviteRouter.get(
 	"/familyInvites/:token/accept",
 	FamilyInvitesController.accept as RequestHandler,
 );

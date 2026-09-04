@@ -15,19 +15,28 @@ export const FamilyInvitesController = {
 	async create(req: AuthenticatedRequest, res: Response) {
 		const body = familyInvitesInput.safeParse(req.body);
 		if (!body.success) {
-			return res.status(400).json(z.treeifyError(body.error));
+			return res
+				.status(400)
+				.json({
+					error: body.error.issues.map((issue) => issue.message).join(", "),
+				});
 		}
-
-		const invite = await familyInviteService.createInvite(
-			body.data.invitedEmail,
-			req.userId,
-		);
-		return res.json({
-			data: invite,
-			meta: {
-				total: 1,
-			},
-		});
+		try {
+			const invite = await familyInviteService.createInvite(
+				body.data.invitedEmail,
+				req.userId,
+			);
+			return res.json({
+				data: invite,
+				meta: {
+					total: 1,
+				},
+			});
+		} catch (err) {
+			res.status(400).json({
+				error: err instanceof Error ? err.message : String(err),
+			});
+		}
 	},
 
 	async accept(req: AuthenticatedRequest, res: Response) {

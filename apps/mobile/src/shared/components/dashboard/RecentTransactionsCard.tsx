@@ -1,9 +1,8 @@
+import type { GetTransactionType } from "@ourbudget/shared";
 import { router } from "expo-router";
 import { Pressable, StyleSheet, View } from "react-native";
 import { Icon, Text } from "react-native-paper";
 import { useAppTheme } from "../../theme";
-
-import { GetTransactionType } from "@ourbudget/shared";
 import { formatCentsAsCurrency } from "../../utils/money";
 
 type RecentTransactionsCardProps = {
@@ -34,8 +33,8 @@ export function RecentTransactionsCard({ data }: RecentTransactionsCardProps) {
 
 			<View>
 				{(data ?? []).map((item) => {
-					const { transactions, categories} = item;
-					const isIncome = transactions.type === 'income';
+					const { transactions, categories } = item;
+					const isIncome = transactions.type === "income";
 					const tint = isIncome
 						? {
 								background: theme.colors.income,
@@ -55,7 +54,7 @@ export function RecentTransactionsCard({ data }: RecentTransactionsCardProps) {
 								]}
 							>
 								<Icon
-									source= {isIncome ? 'arrow-up' : 'arrow-down'}
+									source={isIncome ? "arrow-up" : "arrow-down"}
 									size={16}
 									color={tint.foreground}
 								/>
@@ -71,11 +70,14 @@ export function RecentTransactionsCard({ data }: RecentTransactionsCardProps) {
 								</Text>
 							</View>
 							<Text
-								style={[{
-									fontSize: 13,
-									fontWeight: "400",
-									color: tint.foreground,
-								}, isIncome && styles.incomeAmount]}
+								style={[
+									{
+										fontSize: 13,
+										fontWeight: "400",
+										color: tint.foreground,
+									},
+									isIncome && styles.incomeAmount,
+								]}
 							>
 								{isIncome ? "+" : "-"}
 								{formatCentsAsCurrency(transactions.amountCents)}
