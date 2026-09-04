@@ -15,11 +15,9 @@ export const FamilyInvitesController = {
 	async create(req: AuthenticatedRequest, res: Response) {
 		const body = familyInvitesInput.safeParse(req.body);
 		if (!body.success) {
-			return res
-				.status(400)
-				.json({
-					error: body.error.issues.map((issue) => issue.message).join(", "),
-				});
+			return res.status(400).json({
+				error: body.error.issues.map((issue) => issue.message).join(", "),
+			});
 		}
 		try {
 			const invite = await familyInviteService.createInvite(
@@ -44,7 +42,7 @@ export const FamilyInvitesController = {
 		if (!params.success) {
 			return res.status(400).json({ data: "Missing token information" });
 		}
-		console.log('moohahahaha')
+		console.log("moohahahaha");
 		try {
 			await familyInviteService.acceptInvite(params.data.token);
 			return res.json({ data: "success" });

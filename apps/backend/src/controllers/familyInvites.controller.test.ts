@@ -71,13 +71,14 @@ describe("GET /api/familyInvites/:token/accept", () => {
 			.send({ invitedEmail: "invitee3@test.com" });
 		const inviteToken = createRes.body.data.token;
 
-		const res = await request(app)
-			.get(`/api/familyInvites/${inviteToken}/accept`);
+		const res = await request(app).get(
+			`/api/familyInvites/${inviteToken}/accept`,
+		);
 
-		console.log('status:', res.status);
-console.log('body:', res.body);
-console.log('text:', res.text);
-console.log('headers:', res.headers);
+		console.log("status:", res.status);
+		console.log("body:", res.body);
+		console.log("text:", res.text);
+		console.log("headers:", res.headers);
 
 		expect(res.status).toBe(200);
 		expect(res.body.data).toBe("success");

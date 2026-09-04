@@ -3,7 +3,6 @@ import { TOKEN_KEY } from "../constants";
 import { triggerLogout } from "./authEvents";
 import { storage } from "./storage";
 
-
 function resolveApiPrefix(): string {
 	if (Platform.OS === "web") {
 		return process.env.EXPO_PUBLIC_API_URL_WEB;

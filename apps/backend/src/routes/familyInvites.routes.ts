@@ -11,7 +11,7 @@ familyInviteRouterPublic.get(
 	FamilyInvitesController.accept as RequestHandler,
 );
 
-familyInviteRouter.use(authenticate)
+familyInviteRouter.use(authenticate);
 
 familyInviteRouter.post(
 	"/familyInvites",

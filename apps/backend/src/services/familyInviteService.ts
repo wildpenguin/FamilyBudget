@@ -34,7 +34,7 @@ export const familyInviteService = {
 		if (!user) {
 			throw new Error("Invited email must have an account!");
 		}
-		
+
 		await familyInvitesRepository.accept(invite, user.id);
 	},
 };
