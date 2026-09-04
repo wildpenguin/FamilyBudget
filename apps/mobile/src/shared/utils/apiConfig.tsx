@@ -1,6 +1,8 @@
 import { Platform } from "react-native";
 import { TOKEN_KEY } from "../constants";
+import { triggerLogout } from "./authEvents";
 import { storage } from "./storage";
+
 
 function resolveApiPrefix(): string {
 	if (Platform.OS === "web") {
@@ -28,6 +30,9 @@ export async function apiFetch(url: string, options: RequestInit = {}) {
 			"Content-type": "application/json",
 		},
 	});
+	if (response.status === 401) {
+		triggerLogout();
+	}
 	if (!response.ok) {
 		const errorBody = await response.json().catch(() => null);
 		throw new Error(errorBody?.error ?? `Request failed: ${response.status}`);

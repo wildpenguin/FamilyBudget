@@ -4,16 +4,16 @@ import { FamilyInvitesController } from "../controllers/familyInvites.controller
 import { authenticate } from "../middleware/authenticate";
 
 export const familyInviteRouter = Router();
+export const familyInviteRouterPublic = Router();
 
-familyInviteRouter.use(authenticate);
+familyInviteRouterPublic.get(
+	"/familyInvites/:token/accept",
+	FamilyInvitesController.accept as RequestHandler,
+);
 
-// Handlers are typed with AuthenticatedRequest (req.userId guaranteed) since
-// they only ever run after the `authenticate` middleware above.
+familyInviteRouter.use(authenticate)
+
 familyInviteRouter.post(
 	"/familyInvites",
 	FamilyInvitesController.create as RequestHandler,
-);
-familyInviteRouter.get(
-	"/familyInvites/:token/accept",
-	FamilyInvitesController.accept as RequestHandler,
 );

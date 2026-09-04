@@ -49,7 +49,7 @@ export default function TabsLayout() {
 					tabBarIcon: ({ color, size, focused }) => (
 						<TabIcon
 							source="home-outline"
-							color={color}
+							color={color as string}
 							size={size}
 							focused={focused}
 						/>
@@ -63,7 +63,7 @@ export default function TabsLayout() {
 					tabBarIcon: ({ color, size, focused }) => (
 						<TabIcon
 							source="swap-horizontal"
-							color={color}
+							color={color as string}
 							size={size}
 							focused={focused}
 						/>

@@ -25,7 +25,7 @@ export const familyInviteService = {
 
 		return result;
 	},
-	async acceptInvite(token: string, acceptingUserId: number) {
+	async acceptInvite(token: string) {
 		const invite = await familyInvitesRepository.findByToken(token);
 		if (invite?.status !== "pending" || isPast(invite.expiresAt)) {
 			throw new Error("Invalid or expired token");
@@ -34,9 +34,7 @@ export const familyInviteService = {
 		if (!user) {
 			throw new Error("Invited email must have an account!");
 		}
-		if (acceptingUserId !== user.id) {
-			throw new Error("Requested invite does not match original user");
-		}
-		await familyInvitesRepository.accept(invite, acceptingUserId);
+		
+		await familyInvitesRepository.accept(invite, user.id);
 	},
 };

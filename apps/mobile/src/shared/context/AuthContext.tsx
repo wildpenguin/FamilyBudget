@@ -7,6 +7,7 @@ import {
 } from "react";
 import { TOKEN_KEY, USER_KEY } from "../constants";
 import { API_PREFIX } from "../utils/apiConfig";
+import { registerLogoutHandler } from "../utils/authEvents";
 import { storage } from "../utils/storage";
 
 // --- Types ---
@@ -19,6 +20,7 @@ type User = {
 type AuthContextType = {
 	user: User | null;
 	isLoading: boolean;
+	isAuthenticated: boolean;
 	login: (email: string, password: string) => Promise<void>;
 	register: (email: string, password: string, name: string) => Promise<void>;
 	logout: () => Promise<void>;
@@ -35,6 +37,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: AuthProviderProps) {
 	const [user, setUser] = useState<User | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isAuthenticated, setIsAuthenticated] = useState(false)
 
 	// On mount, check SecureStore/LocalStore for an existing session
 	useEffect(() => {
@@ -47,6 +50,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 				if (token && storedUser) {
 					setUser(JSON.parse(storedUser) as User);
+					setIsAuthenticated(true);
 				}
 			} catch (err) {
 				console.error("Failed to load auth session:", err);
@@ -82,6 +86,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 		await persistSession(token, loggedInUser);
 		setUser(loggedInUser);
+		setIsAuthenticated(true);
 	}
 
 	async function register(
@@ -104,17 +109,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 		await persistSession(token, newUser);
 		setUser(newUser);
+		setIsAuthenticated(true);
 	}
 
 	async function logout(): Promise<void> {
 		await storage.deleteItem(TOKEN_KEY);
 		await storage.deleteItem(USER_KEY);
 		setUser(null);
+		setIsAuthenticated(false);
 	}
+
+	// Lets apiFetch (a plain function, not a hook) trigger a logout on a
+	// 401 without importing AuthContext itself and creating a require cycle.
+	useEffect(() => {
+		registerLogoutHandler(logout);
+	});
 
 	const value: AuthContextType = {
 		user,
 		isLoading,
+		isAuthenticated,
 		login,
 		register,
 		logout,

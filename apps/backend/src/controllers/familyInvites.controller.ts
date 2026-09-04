@@ -1,4 +1,4 @@
-import type { Response } from "express";
+import type { Request, Response } from "express";
 import * as z from "zod";
 import type { AuthenticatedRequest } from "../services/authService";
 import { familyInviteService } from "../services/familyInviteService";
@@ -39,13 +39,14 @@ export const FamilyInvitesController = {
 		}
 	},
 
-	async accept(req: AuthenticatedRequest, res: Response) {
+	async accept(req: Request, res: Response) {
 		const params = acceptToken.safeParse(req.params);
 		if (!params.success) {
 			return res.status(400).json({ data: "Missing token information" });
 		}
+		console.log('moohahahaha')
 		try {
-			await familyInviteService.acceptInvite(params.data.token, req.userId);
+			await familyInviteService.acceptInvite(params.data.token);
 			return res.json({ data: "success" });
 		} catch (err) {
 			res.status(400).json(err instanceof Error ? err.message : String(err));

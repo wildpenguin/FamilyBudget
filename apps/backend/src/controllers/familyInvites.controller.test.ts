@@ -57,7 +57,7 @@ describe("POST /api/familyInvites", () => {
 	});
 });
 
-describe("POST /api/familyInvites/:token/accept", () => {
+describe("GET /api/familyInvites/:token/accept", () => {
 	it("accepts an invite and joins the inviter's family", async () => {
 		const inviter = await createTestUser({ email: "inviter3@test.com" });
 		const family = await createFamily("Acceptor family");
@@ -71,10 +71,13 @@ describe("POST /api/familyInvites/:token/accept", () => {
 			.send({ invitedEmail: "invitee3@test.com" });
 		const inviteToken = createRes.body.data.token;
 
-		const inviteeToken = await loginAs("invitee3@test.com");
 		const res = await request(app)
-			.post(`/api/familyInvites/${inviteToken}/accept`)
-			.set("Authorization", `Bearer ${inviteeToken}`);
+			.get(`/api/familyInvites/${inviteToken}/accept`);
+
+		console.log('status:', res.status);
+console.log('body:', res.body);
+console.log('text:', res.text);
+console.log('headers:', res.headers);
 
 		expect(res.status).toBe(200);
 		expect(res.body.data).toBe("success");
