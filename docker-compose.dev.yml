@@ -63,3 +63,5 @@ services:
 
 volumes:
   pgdata-dev:
+  caddy_data:
+  caddy_config:
