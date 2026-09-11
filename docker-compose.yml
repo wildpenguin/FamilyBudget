@@ -40,6 +40,23 @@ services:
       retries: 5
     ports:
       - "5432:5432"   # optional — expose only if you need external DB access, e.g. for a GUI tool
+ 
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./apps/mobile/dist:/srv/frontend
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend
 
 volumes:
   pgdata:
+  caddy_data:
+  caddy_config:

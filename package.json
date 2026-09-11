@@ -8,6 +8,7 @@
 	],
 	"scripts": {
 		"mobile": "npm run start --workspace=@ourbudget/mobile",
+		"mobile:build:web": "npm run build:web --workspace=@ourbudget/mobile",
 		"backend": "npm run dev --workspace=@ourbudget/backend",
 		"docker:dev:up": "docker compose --env-file apps/backend/.env.development -f docker-compose.dev.yml up -d --build",
 		"docker:dev:stop": "docker compose -f docker-compose.dev.yml stop",

@@ -1,0 +1,18 @@
+{$DOMAIN:localhost} {
+	# API routes handled by the backend
+	handle /api/* {
+		reverse_proxy backend:3000
+	}
+
+	handle /auth/* {
+		reverse_proxy backend:3000
+	}
+
+	# Everything else: serve the built web app, falling back to
+	# index.html so client-side routing works
+	handle {
+		root * /srv/frontend
+		try_files {path} /index.html
+		file_server
+	}
+}
