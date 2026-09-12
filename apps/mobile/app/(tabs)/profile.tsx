@@ -14,7 +14,7 @@ import {
 } from "react-native-paper";
 import QRCode from "react-native-qrcode-svg";
 import { useAuth } from "../../src/shared/context/AuthContext";
-import { API_PREFIX, apiFetch } from "../../src/shared/utils/apiConfig";
+import { absoluteUrl, apiFetch } from "../../src/shared/utils/apiConfig";
 
 export default function ProfileScreen() {
 	const { user, logout } = useAuth();
@@ -61,7 +61,7 @@ export default function ProfileScreen() {
 				body: JSON.stringify({ invitedEmail: inviteEmail }),
 			});
 			setInviteUrl(
-				`${API_PREFIX}/api/familyInvites/${response.data.token}/accept`,
+				absoluteUrl(`/api/familyInvites/${response.data.token}/accept`),
 			);
 		} catch (err) {
 			setInviteError(

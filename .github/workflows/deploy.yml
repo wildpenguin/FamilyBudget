@@ -43,15 +43,14 @@ jobs:
           node-version: 24
 
       - name: Build frontend web export
-        working-directory: ./frontend
         run: |
           npm ci
-          npx expo export -p web
+          npm run build:web --workspace=@ourbudget/mobile
 
       - uses: actions/upload-artifact@v4
         with:
           name: frontend-dist
-          path: frontend/dist
+          path: apps/mobile/dist
 
   deploy:
     needs: build
@@ -69,7 +68,7 @@ jobs:
           username: ${{ secrets.VM_USER }}  
           key: ${{ secrets.VM_SSH_KEY }}
           source: "frontend-dist/*"
-          target: "~/budget-app/frontend/dist"
+          target: "~/budget-app/apps/mobile/dist"
           strip_components: 1
 
       - name: Pull latest backend image and restart stack

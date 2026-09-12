@@ -5,7 +5,9 @@ import { storage } from "./storage";
 
 function resolveApiPrefix(): string {
 	if (Platform.OS === "web") {
-		return process.env.EXPO_PUBLIC_API_URL_WEB;
+		// Caddy serves the web build and proxies /api and /auth on the same
+		// origin, so an unset prefix means same-origin relative requests.
+		return process.env.EXPO_PUBLIC_API_URL_WEB ?? "";
 	}
 	/** fit more scenarios when service android, ios... */
 
@@ -13,6 +15,13 @@ function resolveApiPrefix(): string {
 }
 
 export const API_PREFIX = resolveApiPrefix();
+
+// Links that leave the app (QR codes, shared invites) can't be relative.
+export function absoluteUrl(path: string): string {
+	const base =
+		API_PREFIX || (Platform.OS === "web" ? window.location.origin : "");
+	return `${base}${path}`;
+}
 
 export async function apiFetch(url: string, options: RequestInit = {}) {
 	const token = await storage.getItem(TOKEN_KEY);
