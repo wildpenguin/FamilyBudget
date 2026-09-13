@@ -33,7 +33,8 @@ jobs:
       - name: Build and push backend image (linux/arm64)
         uses: docker/build-push-action@v7
         with:
-          context: ./apps/backend
+          context: .
+          file: apps/backend/Dockerfile
           push: true
           platforms: linux/arm64
           tags: ${{ env.BACKEND_IMAGE }}:latest
