@@ -12,10 +12,10 @@ const external = Object.keys(pkg.dependencies ?? {}).filter(
 );
 
 await build({
-	entryPoints: ["src/index.ts"],
+	entryPoints: ["src/index.ts", "src/migrate.ts"],
 	bundle: true,
 	platform: "node",
 	format: "cjs",
-	outfile: "dist/index.js",
+	outdir: "dist",
 	external,
 });

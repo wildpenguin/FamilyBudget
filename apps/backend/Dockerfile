@@ -28,6 +28,7 @@ COPY packages/shared/package.json ./packages/shared/package.json
 RUN npm ci --omit=dev
 
 COPY --from=builder /app/apps/backend/dist ./apps/backend/dist
+COPY --from=builder /app/apps/backend/migrations ./apps/backend/migrations
 
 WORKDIR /app/apps/backend
 EXPOSE 3000

@@ -80,7 +80,7 @@ jobs:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
-          source: "docker-compose.yml,Caddyfile"
+          source: "docker-compose.yml,Caddyfile,apps/backend/db-init"
           target: "~/budget-app"
 
       - name: Pull latest backend image and restart stack
@@ -94,3 +94,4 @@ jobs:
             cd ~/budget-app
             docker compose pull backend
             docker compose up -d
+            docker compose exec -T backend node dist/migrate.js
