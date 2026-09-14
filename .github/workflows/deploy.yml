@@ -57,6 +57,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v7
+
       - uses: actions/download-artifact@v5
         with:
           name: frontend-dist
@@ -71,6 +73,15 @@ jobs:
           source: "frontend-dist/*"
           target: "~/budget-app/apps/mobile/dist"
           strip_components: 1
+
+      - name: Copy stack config to the VM
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          source: "docker-compose.yml,Caddyfile"
+          target: "~/budget-app"
 
       - name: Pull latest backend image and restart stack
         uses: appleboy/ssh-action@v1
