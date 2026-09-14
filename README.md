@@ -78,8 +78,8 @@ Successful protected responses use `{ "data": ..., "meta": ... }`; errors return
 ### Categories
 
 | Method | Endpoint | Request | Purpose |
-| --- | --- | --- |
-| GET | `/api/categories` | Query: `type=income|expense`, `sort=asc|desc` (optional) | List categories available to the current family. |
+| --- | --- | --- | --- |
+| GET | `/api/categories` | Query: `type=income\|expense`, `sort=asc\|desc` (optional) | List categories available to the current family. |
 | POST | `/api/categories` | `{ name, type }` | Create an income or expense category. |
 | PUT | `/api/categories/:categoryId` | `{ name }` | Rename a category. |
 | DELETE | `/api/categories/:categoryId` | — | Delete a category. |
@@ -87,7 +87,7 @@ Successful protected responses use `{ "data": ..., "meta": ... }`; errors return
 ### Transactions
 
 | Method | Endpoint | Request | Purpose |
-| --- | --- | --- |
+| --- | --- | --- | --- |
 | GET | `/api/transactions` | Query: `filter[from]`, `filter[to]`, `filter[type]`, `filter[search]`, `sort`, `limit` (all optional) | List the current family's transactions. Dates use `YYYY-MM-DD`. |
 | GET | `/api/transactions/:id` | — | Retrieve one transaction. |
 | POST | `/api/transactions` | `{ categoryId, scheduleId?, amountCents, type, description, status?, date? }` | Create a transaction. `amountCents` is a positive integer; `type` is `income` or `expense`. |
@@ -99,7 +99,7 @@ Successful protected responses use `{ "data": ..., "meta": ... }`; errors return
 ### Schedules
 
 | Method | Endpoint | Request | Purpose |
-| --- | --- | --- |
+| --- | --- | --- | --- |
 | GET | `/api/schedules` | — | List recurring schedules for the current family. |
 | GET | `/api/schedules/upcoming` | — | Return the nearest upcoming scheduled payment. |
 | GET | `/api/schedules/:id` | — | Retrieve one schedule. |
@@ -112,7 +112,7 @@ Successful protected responses use `{ "data": ..., "meta": ... }`; errors return
 ### Budget dashboard
 
 | Method | Endpoint | Request | Purpose |
-| --- | --- | --- |
+| --- | --- | --- | --- |
 | GET | `/api/budgets/overview` | Query: `filter[from]`, `filter[to]` (optional `YYYY-MM-DD`) | Return total income, expenses, net balance, and category breakdown for the selected period. |
 | GET | `/api/budgets/monthly` | Query: `months` (required integer) | Return monthly income/expense chart data for the requested number of months. |
 
