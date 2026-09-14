@@ -21,7 +21,9 @@ async function fetchTransactions(
 }
 
 async function deleteTransactionById(id: number): Promise<{ id: number }> {
-	return { id };
+	const result = await apiFetch(`/transactions/${id}`, {method: 'DELETE'});
+
+	return result;
 }
 
 // ---------------------------------------------------------------------------
