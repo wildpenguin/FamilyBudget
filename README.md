@@ -4,6 +4,8 @@
 
 Built as a portfolio project, it demonstrates end-to-end product development: a cross-platform mobile/web client, a typed REST API, secure authentication and authorization, PostgreSQL data modeling, automated testing, containers, and continuous deployment.
 
+![Application screenshot](screenshot.png)
+
 ## What it does
 
 - Register and sign in securely with JWT-based authentication.
