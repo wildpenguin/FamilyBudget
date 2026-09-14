@@ -37,6 +37,8 @@ export const AuthController = {
 		});
 	},
 	async register(req: Request, res: Response) {
+		return res.status(400).json({ error: "Not possible to register at this time"});
+
 		const result = registerSchema.safeParse(req.body);
 		if (!result.success) {
 			return res.status(400).json(z.treeifyError(result.error));
