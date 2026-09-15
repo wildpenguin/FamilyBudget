@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, View } from "react-native";
 import { Icon, Text } from "react-native-paper";
 import { useAppTheme } from "../../theme";
 import { formatCentsAsCurrency } from "../../utils/money";
+import { formatDateOnly } from "../../utils/dates";
 
 type RecentTransactionsCardProps = {
 	data: GetTransactionType[] | undefined;
@@ -66,7 +67,7 @@ export function RecentTransactionsCard({ data }: RecentTransactionsCardProps) {
 								<Text
 									style={{ fontSize: 11, color: theme.colors.onSurfaceVariant }}
 								>
-									{transactions.date}
+									{formatDateOnly(transactions.date)}
 								</Text>
 							</View>
 							<Text
