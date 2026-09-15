@@ -8,8 +8,8 @@ export const ScheduleInput = z.object({
 		.int()
 		.refine((val) => val !== 0, "Amount must not be zero"),
 	frequency: z.enum(["once", "weekly", "biweekly", "monthly", "yearly"]),
-	startDate: z.coerce.date(),
-	endDate: z.coerce.date().optional(),
+	startDate: z.iso.date(),
+	endDate: z.iso.date().optional(),
 	dayOfMonth: z.coerce.number().int().min(1).max(31).optional(),
 	dayOfWeek: z.coerce.number().int().min(0).max(6).optional(),
 	active: z.boolean().optional(),

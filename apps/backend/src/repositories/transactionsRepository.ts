@@ -36,6 +36,7 @@ export const transactionsRepository = {
 				description: transaction.description,
 				status: transaction.status,
 				createdByUserId: userId,
+				date: transaction.date,
 			})
 			.returning();
 
@@ -79,7 +80,7 @@ export const transactionsRepository = {
 			from?: string;
 			to?: string;
 			type?: "expense" | "income";
-			search: string;
+			search?: string;
 		},
 		sort?: "asc" | "desc",
 		pageSize = 100,

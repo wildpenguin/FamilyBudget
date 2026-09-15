@@ -7,7 +7,9 @@ export const TransactionsInput = z.object({
 	type: z.enum(["income", "expense"]),
 	description: z.string().max(255),
 	status: z.enum(["actual", "projected", "skipped"]).optional(),
-	date: z.coerce.date().optional(),
+	// A DATE column is a calendar date: keep it a YYYY-MM-DD string end to end
+	// so no Date object exists to be shifted by a timezone.
+	date: z.iso.date().optional(),
 });
 
 export type InputTransactionsType = z.infer<typeof TransactionsInput>;

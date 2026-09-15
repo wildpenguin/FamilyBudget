@@ -1,4 +1,5 @@
 import type { InputTransactionsType } from "@ourbudget/shared";
+import { format } from "date-fns";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import {
@@ -61,7 +62,7 @@ export function ExpenseForm({ onSave, isSaving }: ExpenseFormProps) {
 		onSave({
 			amountCents: dollarsToCents(parsedAmount),
 			categoryId: selectedCategory.id,
-			date: date,
+			date: format(date, "yyyy-MM-dd"),
 			description: note.trim().length > 0 ? note.trim() : "",
 			type: "expense",
 			status: "actual",
