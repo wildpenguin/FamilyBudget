@@ -64,6 +64,19 @@ jobs:
           name: frontend-dist
           path: frontend-dist
 
+      - name: Ensure deploy directories exist
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          # Docker creates missing bind-mount sources as root, which then
+          # blocks scp. Pre-creating them keeps ownership with the deploy user.
+          script: |
+            set -e
+            mkdir -p ~/budget-app/apps/backend/db-init
+            mkdir -p ~/budget-app/apps/mobile/dist
+
       - name: Copy frontend build to the VM
         uses: appleboy/scp-action@v1
         with:
