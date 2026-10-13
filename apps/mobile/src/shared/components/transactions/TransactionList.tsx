@@ -3,9 +3,11 @@ import {
 	ActivityIndicator,
 	Avatar,
 	Card,
+	Icon,
 	IconButton,
 	Text,
 } from "react-native-paper";
+import { useAppTheme } from "../../theme";
 import { formatDateOnly } from "../../utils/dates";
 import { centsToDollars } from "../../utils/money";
 import { useDeleteTransaction, useTransactions } from "./transactions";
@@ -27,16 +29,27 @@ function TransactionRow({ item, onDelete, onEdit, deleting }: RowProps) {
 	const { transactions, categories } = item;
 	const isIncome = transactions.type === "income";
 	const sign = isIncome ? "+" : "-";
+	const theme = useAppTheme();
+	const tint = isIncome
+		? {
+				background: theme.colors.income,
+				foreground: theme.colors.tertiary,
+			}
+		: {
+				background: theme.colors.expense,
+				foreground: theme.colors.error,
+			};
 
 	return (
 		<Card style={styles.card} mode="outlined">
 			<View style={styles.row}>
-				<Avatar.Icon
-					size={32}
-					icon={isIncome ? "arrow-up" : "arrow-down"}
-					style={isIncome ? styles.incomeIcon : styles.expenseIcon}
-					color={isIncome ? "#0F6E56" : "#993C1D"}
-				/>
+				<View style={[styles.iconCircle, { backgroundColor: tint.background }]}>
+					<Icon
+						source={isIncome ? "arrow-up" : "arrow-down"}
+						size={16}
+						color={tint.foreground}
+					/>
+				</View>
 
 				<View style={styles.info}>
 					<Text style={styles.description} numberOfLines={1}>
@@ -48,7 +61,16 @@ function TransactionRow({ item, onDelete, onEdit, deleting }: RowProps) {
 					</Text>
 				</View>
 
-				<Text style={[styles.amount, isIncome && styles.incomeAmount]}>
+				<Text
+					style={[
+						{
+							fontSize: 13,
+							fontWeight: "400",
+							color: tint.foreground,
+						},
+						isIncome && styles.incomeAmount,
+					]}
+				>
 					{sign}${centsToDollars(transactions.amountCents)}
 				</Text>
 
@@ -164,5 +186,12 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		color: "#888",
 		fontSize: 13,
+	},
+	iconCircle: {
+		width: 34,
+		height: 34,
+		borderRadius: 10,
+		alignItems: "center",
+		justifyContent: "center",
 	},
 });
