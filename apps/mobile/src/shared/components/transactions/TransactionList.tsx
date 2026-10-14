@@ -1,7 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import {
 	ActivityIndicator,
-	Avatar,
 	Card,
 	Icon,
 	IconButton,

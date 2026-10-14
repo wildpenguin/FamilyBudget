@@ -3,17 +3,22 @@ import { format } from "date-fns";
 import { apiFetch } from "../../utils/apiConfig";
 import type { Transaction, TransactionFilters } from "./types";
 
-async function fetchTransactions(
-	filters: TransactionFilters,
-): Promise<Transaction[]> {
-	const params = new URLSearchParams(
+// Serializes filters as `filter[key]=value`, the shape the backend expects.
+export function toFilterParams(filters: TransactionFilters): URLSearchParams {
+	return new URLSearchParams(
 		Object.entries(filters)
-			.filter(([k, v]) => v !== undefined && v !== "")
+			.filter(([, v]) => v !== undefined && v !== "")
 			.map(([k, v]) => [
 				`filter[${k}]`,
 				v instanceof Date ? format(v, "yyyy-MM-dd") : v,
 			]),
 	);
+}
+
+async function fetchTransactions(
+	filters: TransactionFilters,
+): Promise<Transaction[]> {
+	const params = toFilterParams(filters);
 	const response = await apiFetch(`/transactions?${params}`, {
 		method: "GET",
 	});
@@ -35,6 +40,8 @@ export const transactionsKeys = {
 	root: ["transactions"] as const,
 	list: (filters: TransactionFilters) =>
 		["transactions", "list", filters] as const,
+	summary: (filters: TransactionFilters) =>
+		["transactions", "summary", filters] as const,
 };
 
 // ---------------------------------------------------------------------------

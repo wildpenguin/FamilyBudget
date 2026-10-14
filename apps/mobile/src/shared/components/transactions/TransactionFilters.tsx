@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Chip, TextInput } from "react-native-paper";
 import { DatePickerInput } from "react-native-paper-dates";
