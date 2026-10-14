@@ -2,13 +2,17 @@ import { endOfMonth, format, startOfMonth, subMonths } from "date-fns";
 import { transactionsRepository } from "../repositories/transactionsRepository";
 
 export const budgetsOverviewService = {
-	async getOverview(familyId: number, filter?: { from?: string; to?: string }) {
+	async getOverview(
+		familyId: number,
+		filter?: { from?: string; to?: string; search?: string },
+	) {
 		const from = filter?.from ?? format(startOfMonth(new Date()), "yyyy-MM-dd");
 		const to = filter?.to ?? format(endOfMonth(new Date()), "yyyy-MM-dd");
 
 		const summary = await transactionsRepository.getSummary(familyId, {
 			from,
 			to,
+			search: filter?.search,
 		});
 
 		return summary;

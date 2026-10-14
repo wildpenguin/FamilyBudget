@@ -9,6 +9,7 @@ const overviewQuery = z.object({
 		.object({
 			from: z.iso.date().optional(),
 			to: z.iso.date().optional(),
+			search: z.string().optional(),
 		})
 		.optional(),
 });

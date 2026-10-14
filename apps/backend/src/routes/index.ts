@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { authRouter } from "./auth.routes";
-import { BudgetsOverviewRouter } from "./budgetsoverview.routes";
+import { budgetsOverviewRouter } from "./budgetsoverview.routes";
 import { categoriesRouter } from "./categories.routes";
 import {
 	familyInviteRouter,
@@ -22,4 +22,4 @@ router.use("/api", categoriesRouter);
 router.use("/api", familyInviteRouter);
 router.use("/api", transactionsRouter);
 router.use("/api", schedulesRouter);
-router.use("/api", BudgetsOverviewRouter);
+router.use("/api", budgetsOverviewRouter);

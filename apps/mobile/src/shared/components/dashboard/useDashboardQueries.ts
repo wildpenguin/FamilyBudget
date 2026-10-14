@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-
+import { transactionsKeys } from "../transactions/transactions";
+import type { TransactionFilters } from "../transactions/types";
 import {
 	fetchBalanceSummary,
 	fetchMonthlyChartData,
@@ -11,10 +12,14 @@ import {
 // invalidation granular (e.g. refetching just the chart after a new
 // transaction is added, without refetching everything else).
 
-export function useBalanceSummary() {
+// With filters, the summary is cached under the transactions namespace so
+// deleting a transaction (which invalidates transactionsKeys.root) refreshes it.
+export function useBalanceSummary(filters?: TransactionFilters) {
 	return useQuery({
-		queryKey: ["dashboard", "balance"],
-		queryFn: fetchBalanceSummary,
+		queryKey: filters
+			? transactionsKeys.summary(filters)
+			: ["dashboard", "balance"],
+		queryFn: () => fetchBalanceSummary(filters),
 	});
 }
 

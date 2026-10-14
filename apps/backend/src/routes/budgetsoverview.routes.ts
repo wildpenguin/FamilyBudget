@@ -2,15 +2,15 @@ import { type RequestHandler, Router } from "express";
 import { BudgetsOverviewController } from "../controllers/budgetsOverview.controller";
 import { authenticate } from "../middleware/authenticate";
 
-export const BudgetsOverviewRouter = Router();
+export const budgetsOverviewRouter = Router();
 
-BudgetsOverviewRouter.use(authenticate);
+budgetsOverviewRouter.use(authenticate);
 
-BudgetsOverviewRouter.get(
+budgetsOverviewRouter.get(
 	"/budgets/overview",
 	BudgetsOverviewController.overview as RequestHandler,
 );
-BudgetsOverviewRouter.get(
+budgetsOverviewRouter.get(
 	"/budgets/monthly",
 	BudgetsOverviewController.monthlyChart as RequestHandler,
 );

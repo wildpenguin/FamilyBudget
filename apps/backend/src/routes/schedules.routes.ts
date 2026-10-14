@@ -1,4 +1,4 @@
-import Router, { type RequestHandler } from "express";
+import { type RequestHandler, Router } from "express";
 import { schedulesController } from "../controllers/schedules.controller";
 import { authenticate } from "../middleware/authenticate";
 

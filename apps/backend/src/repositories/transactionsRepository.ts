@@ -19,6 +19,33 @@ type BudgetSummary = {
 	}[];
 };
 
+type TransactionsFilter = {
+	from?: string;
+	to?: string;
+	type?: "expense" | "income";
+	search?: string;
+};
+
+// Shared by the list and totals queries so both always filter identically.
+function buildFilterConditions(familyId: number, filter?: TransactionsFilter) {
+	const conditions = [eq(transactions.familyId, familyId)];
+
+	if (filter?.from) {
+		conditions.push(gte(transactions.date, filter.from));
+	}
+	if (filter?.to) {
+		conditions.push(lte(transactions.date, filter.to));
+	}
+	if (filter?.type) {
+		conditions.push(eq(transactions.type, filter.type));
+	}
+	if (filter?.search) {
+		conditions.push(like(transactions.description, `%${filter.search}%`));
+	}
+
+	return conditions;
+}
+
 export const transactionsRepository = {
 	async create(
 		transaction: InputTransactionsType,
@@ -76,31 +103,14 @@ export const transactionsRepository = {
 	async get(
 		familyId: number,
 		transactionId?: number,
-		filter?: {
-			from?: string;
-			to?: string;
-			type?: "expense" | "income";
-			search?: string;
-		},
+		filter?: TransactionsFilter,
 		sort?: "asc" | "desc",
 		pageSize = 100,
 	) {
-		const conditions = [eq(transactions.familyId, familyId)];
+		const conditions = buildFilterConditions(familyId, filter);
 
 		if (transactionId) {
 			conditions.push(eq(transactions.id, transactionId));
-		}
-		if (filter?.from) {
-			conditions.push(gte(transactions.date, filter.from));
-		}
-		if (filter?.to) {
-			conditions.push(lte(transactions.date, filter.to));
-		}
-		if (filter?.type) {
-			conditions.push(eq(transactions.type, filter.type));
-		}
-		if (filter?.search) {
-			conditions.push(like(transactions.description, `%${filter.search}%`));
 		}
 
 		const sortFn = sort === "asc" ? asc : desc;
@@ -116,7 +126,7 @@ export const transactionsRepository = {
 	},
 	async getSummary(
 		familyId: number,
-		filter: { from: string; to: string },
+		filter: TransactionsFilter & { from: string; to: string },
 	): Promise<BudgetSummary> {
 		const summary = await db
 			.select({
@@ -129,10 +139,8 @@ export const transactionsRepository = {
 			.innerJoin(categories, eq(transactions.categoryId, categories.id))
 			.where(
 				and(
-					eq(transactions.familyId, familyId),
+					...buildFilterConditions(familyId, filter),
 					eq(transactions.status, "actual"),
-					gte(transactions.date, filter.from),
-					lte(transactions.date, filter.to),
 				),
 			)
 			.groupBy(transactions.categoryId, categories.name, transactions.type);
@@ -140,6 +148,7 @@ export const transactionsRepository = {
 		const expensesSummary = summary
 			.filter((r) => r.type === "expense")
 			.reduce((s, r) => s + Number(r.totalAmountCents), 0);
+
 		const incomeSummary = summary
 			.filter((r) => r.type === "income")
 			.reduce((s, r) => s + Number(r.totalAmountCents), 0);

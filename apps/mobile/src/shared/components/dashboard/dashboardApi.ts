@@ -1,5 +1,7 @@
 import type { GetTransactionType } from "@ourbudget/shared";
 import { apiFetch } from "../../utils/apiConfig";
+import { toFilterParams } from "../transactions/transactions";
+import type { TransactionFilters } from "../transactions/types";
 import type {
 	BalanceSummary,
 	CategoryBreakdown,
@@ -7,8 +9,13 @@ import type {
 	UpcomingSchedule,
 } from "./dashboard";
 
-export async function fetchBalanceSummary(): Promise<BalanceSummary> {
-	const overview = await apiFetch("/budgets/overview", { method: "GET" });
+export async function fetchBalanceSummary(
+	filters?: TransactionFilters,
+): Promise<BalanceSummary> {
+	const query = filters ? `?${toFilterParams(filters)}` : "";
+	const overview = await apiFetch(`/budgets/overview${query}`, {
+		method: "GET",
+	});
 	const max = Math.max(
 		...overview.data.byCategory.map((category: CategoryBreakdown) =>
 			Number(category.totalAmountCents),
